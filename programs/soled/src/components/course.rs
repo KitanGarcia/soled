@@ -11,9 +11,6 @@ pub fn create_course(
 ) -> Result<()> {
     let course: &mut Account<Course> = &mut ctx.accounts.course;
     let authority: &Signer = &ctx.accounts.authority;
-    msg!("username: {}", username);
-    msg!("email: {}", email);
-    msg!("description: {}", description);
 
     course.authority = *authority.key;
     course.title = title;
@@ -66,10 +63,9 @@ pub struct Course {
 const DISCRIMINATOR_LENGTH: usize = 8;
 const PUBKEY_LENGTH: usize = 32;
 const STRING_LENGTH_PREFIX: usize = 4;
-const AUTHORITY_LENGTH: usize = 8;
 const TITLE_LENGTH: usize = 20 * 4;
 const DESCRIPTION_LENGTH: usize = 200 * 4;
-const THUMBAIL_URL_LENGTH: usize = 300 * 4;
+const THUMBNAIL_URL_LENGTH: usize = 300 * 4;
 
 impl Course {
     const LEN: usize = DISCRIMINATOR_LENGTH
@@ -79,5 +75,5 @@ impl Course {
         + STRING_LENGTH_PREFIX 
         + DESCRIPTION_LENGTH 
         + STRING_LENGTH_PREFIX
-        + THUMBNAIL_URL_LENGTH
+        + THUMBNAIL_URL_LENGTH;
 }
