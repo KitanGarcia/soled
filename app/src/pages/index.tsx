@@ -6,6 +6,7 @@ import styles from '../styles/Home.module.css';
 
 import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
+import Form from '../components/Form';
 
 const Home: NextPage = () => {
     return (
@@ -16,7 +17,6 @@ const Home: NextPage = () => {
                     Welcome to <a href="https://nextjs.org">Next.js!</a>
                 </h1>
             </main>
-
             <Footer />
         </div>
     );
