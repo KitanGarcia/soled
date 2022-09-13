@@ -8,18 +8,18 @@ import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
 
 const Home: NextPage = () => {
-    return (
-        <div className={styles.container}>
-            <NavBar></NavBar>
-            <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Welcome to <a href="https://nextjs.org">Next.js!</a>
-                </h1>
-            </main>
+  return (
+    <div className="bg-bg-color text-main-text">
+      <NavBar></NavBar>
+      <main className={styles.main}>
+        <h1 className={styles.title}>
+          Welcome to <a href="https://nextjs.org">Next.js!</a>
+        </h1>
+      </main>
 
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 };
 
 export default Home;
