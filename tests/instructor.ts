@@ -20,6 +20,34 @@ describe("instructor", () => {
   describe("creation", () => {
     const instructor = anchor.web3.Keypair.generate();
 
+    afterEach(async () => {
+      // Delete Instructor
+      await program.rpc.deleteInstructor({
+        accounts: {
+          instructor: instructor.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        },
+        signers: [],
+      });
+
+      // Fetch Creator and check that it no longer exists
+      try {
+        const deletedInstructor = await program.account.instructor.fetch(
+          instructor.publicKey
+        );
+        console.log(deletedInstructor);
+      } catch (error) {
+        const errorMsg = "Error: Account does not exist";
+
+        // Check that output is the same as above message
+        assert.equal(
+          error.toString().substring(0, error.toString().lastIndexOf(" ")),
+          errorMsg
+        );
+      }
+    });
+
     it("can create an instructor account", async () => {
       const signers = [instructor];
 

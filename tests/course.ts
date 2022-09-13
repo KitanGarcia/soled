@@ -39,6 +39,7 @@ describe("course", () => {
         console.log(deletedCourse);
       } catch (error) {
         const errorMsg = "Error: Account does not exist";
+
         // Check that output is the same as above message
         assert.equal(
           error.toString().substring(0, error.toString().lastIndexOf(" ")),

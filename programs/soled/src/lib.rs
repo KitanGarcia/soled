@@ -23,6 +23,10 @@ pub mod soled {
         components::create_instructor(ctx, username, profile_pic_url, background_pic_url)
     }
 
+    pub fn delete_instructor(ctx: Context<DeleteInstructor>) -> Result<()> {
+        components::delete_instructor(ctx) 
+    }
+
     // Course
     pub fn create_course(
         ctx: Context<CreateCourse>,

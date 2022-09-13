@@ -24,6 +24,12 @@ pub fn create_instructor(
     Ok(())
 }
 
+pub fn delete_instructor(_ctx: Context<DeleteInstructor>) -> Result<()> {
+    msg!("Instructor closed successfully");
+
+    Ok(())
+}
+
 // 
 // Data Validators
 //
@@ -43,6 +49,17 @@ pub struct CreateInstructor<'info> {
     pub authority: Signer<'info>,
 
     // Ensure System Program is the official one from Solana and handle errors
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DeleteInstructor<'info> {
+    #[account(mut, close=authority)]
+    pub instructor: Account<'info, Instructor>,
+
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
     pub system_program: Program<'info, System>,
 }
 
