@@ -8,6 +8,7 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 const navigation = [
   { name: 'Home', href: '/', current: true },
   { name: 'Dashboard', href: 'dashboard', current: false },
+  { name: 'My Courses', href: 'mycourses', current: false },
 ]
 
 function classNames(...classes) {
