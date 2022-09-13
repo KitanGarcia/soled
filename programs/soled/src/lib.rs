@@ -21,6 +21,10 @@ pub mod soled {
     ) -> Result<()> {
         components::create_course(ctx, title, description, thumbnail_url)
     }
+
+    pub fn delete_course(ctx: Context<DeleteCourse>) -> Result<()> {
+        components::delete_course(ctx) 
+    }
 }
 
 #[derive(Accounts)]

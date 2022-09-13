@@ -18,8 +18,36 @@ describe("soled", () => {
   });
 
   describe("creation", () => {
+    const course = anchor.web3.Keypair.generate();
+
+    afterEach(async () => {
+      // Delete Course
+      await program.rpc.deleteCourse({
+        accounts: {
+          course: course.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        },
+        signers: [],
+      });
+
+      // Fetch Creator and check that it no longer exists
+      try {
+        const deletedCourse = await program.account.course.fetch(
+          course.publicKey
+        );
+        console.log(deletedCourse);
+      } catch (error) {
+        const errorMsg = "Error: Account does not exist";
+        // Check that output is the same as above message
+        assert.equal(
+          error.toString().substring(0, error.toString().lastIndexOf(" ")),
+          errorMsg
+        );
+      }
+    });
+
     it("can create a Course account", async () => {
-      const course = anchor.web3.Keypair.generate();
       const signers = [course];
 
       await program.rpc.createCourse(
@@ -43,6 +71,7 @@ describe("soled", () => {
       const courseAccount = await program.account.course.fetch(
         course.publicKey
       );
+      console.log("ACCOUNT", courseAccount);
 
       assert.equal(courseAccount.title, "1st course title");
       assert.equal(courseAccount.description, "1st course description");

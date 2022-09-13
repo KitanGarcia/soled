@@ -20,6 +20,12 @@ pub fn create_course(
     Ok(())
 }
 
+pub fn delete_course(_ctx: Context<DeleteCourse>) -> Result<()> {
+    msg!("Course closed successfully");
+
+    Ok(())
+}
+
 
 // 
 // Data Validators
@@ -42,6 +48,19 @@ pub struct CreateCourse<'info> {
 
     // Ensure System Program is the official one from Solana and handle errors
     // Ensure benefit_number == num_benefits + 1
+    pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct DeleteCourse<'info> {
+    // Create account of type Course and assign creators's pubkey as the payer
+    #[account(mut, close=authority)]
+    pub course: Account<'info, Course>,
+
+    // Define user as mutable - money in their account, profile data, etc.
+    #[account(mut)]
+    pub authority: Signer<'info>,
+
     pub system_program: Program<'info, System>,
 }
 
