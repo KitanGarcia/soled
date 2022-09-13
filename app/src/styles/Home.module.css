@@ -50,6 +50,12 @@
   text-align: center;
 }
 
+.walletButtons {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 2rem;
+}
+
 .description {
   margin: 4rem 0;
   line-height: 1.5;
@@ -112,18 +118,5 @@
   .grid {
     width: 100%;
     flex-direction: column;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .card,
-  .footer {
-    border-color: #222;
-  }
-  .code {
-    background: #111;
-  }
-  .logo img {
-    filter: invert(1);
   }
 }
