@@ -1,20 +1,23 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
 import React from 'react';
 import styles from '../styles/Home.module.css';
 
 import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
+import CourseGrid from '../components/CourseGrid';
 
-const Home: NextPage = () => {
+const Dashboard: NextPage = () => {
     return (
         <div className={styles.container}>
             <NavBar></NavBar>
+
             <main className={styles.main}>
                 <h1 className={styles.title}>
-                    Welcome to <a href="https://nextjs.org">Next.js!</a>
+                    Courses
                 </h1>
+
+                <CourseGrid />
             </main>
 
             <Footer />
@@ -22,4 +25,4 @@ const Home: NextPage = () => {
     );
 };
 
-export default Home;
+export default Dashboard;
