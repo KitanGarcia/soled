@@ -1,5 +1,8 @@
 use anchor_lang::prelude::*;
 
+pub mod components;
+use components::*;
+
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
 #[program]
@@ -8,6 +11,19 @@ pub mod soled {
 
     pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
         Ok(())
+    }
+
+    pub fn create_course(
+        ctx: Context<CreateCourse>,
+        title: String,
+        description: String,
+        thumbnail_url: String,
+    ) -> Result<()> {
+        components::create_course(ctx, title, description, thumbnail_url)
+    }
+
+    pub fn delete_course(ctx: Context<DeleteCourse>) -> Result<()> {
+        components::delete_course(ctx) 
     }
 }
 
