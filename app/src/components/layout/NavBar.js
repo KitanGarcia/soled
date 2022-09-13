@@ -3,6 +3,8 @@ import { WalletDisconnectButton, WalletMultiButton } from '@solana/wallet-adapte
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
+require('@solana/wallet-adapter-react-ui/styles.css');
+
 const navigation = [
   { name: 'Home', href: '#', current: false },
   { name: 'Dashboard', href: '#', current: true },
