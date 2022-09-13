@@ -72,7 +72,6 @@ export default function NavBar() {
                     <BellIcon className="h-6 w-6" aria-hidden="true" />
                     </button>
 
-                    {/* Profile dropdown */}
                     <WalletMultiButton />
                 </div>
                 </div>
