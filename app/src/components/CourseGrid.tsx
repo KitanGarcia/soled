@@ -38,7 +38,6 @@ export default function CourseGrid() {
         const allCourses = await program.account.course.all()
   
         setCourses(allCourses)
-  
       } catch (error) {
         console.error(error);
       }
@@ -46,10 +45,7 @@ export default function CourseGrid() {
   }, [wallet, program]);
 
   useEffect(() => {
-    if (
-      wallet &&
-      program
-    ) {
+    if (wallet && program) {
       getCourses();
     }
   }, [wallet, program, getCourses]);
