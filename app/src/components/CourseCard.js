@@ -1,4 +1,3 @@
-import { Fragment } from 'react';
 import { WrenchIcon, HeartIcon } from '@heroicons/react/24/solid';
 
 export default function CourseCard(props) {
@@ -37,17 +36,12 @@ export default function CourseCard(props) {
           </div>
         </div>
 
-
         <div className="relative right-[-15px] bottom-[-15px] ">
           <button className="btn h-[90px] w-[90px] rounded-full bg-like-btn hover:bg-gradient-to-br from-solana-start to-solana-end">
             <HeartIcon className="ml-1 h-6 w-6 text-main-text offset-position" />
           </button>
         </div>
-       
-        
-        
       </div>
-      
   </div>
   );
 }

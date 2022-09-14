@@ -27,11 +27,9 @@ export default function CourseGrid() {
 
   const program = useMemo(() => {
     if (wallet) {
-      const provider = new AnchorProvider(connection, wallet, OPTS);
+      const provider = new AnchorProvider(connection, wallet!, OPTS);
       return new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
     }
-
-    return null;
   }, [wallet]);
 
   const getCourses = useCallback(async () => {
@@ -39,35 +37,14 @@ export default function CourseGrid() {
     if (wallet && program) {
       try {
         const allCourses = await program.account.course.all()
-
-        console.log(allCourses);
   
         setCourses(allCourses)
-
-        console.log(courses);
   
       } catch (error) {
         console.error(error);
       }
     }
   }, [wallet, program]);
-
-  const addSol = async () => {
-    if (!wallet) {
-      console.error('wallet key not found');
-      return;
-    }
-
-    const connection = new Connection(clusterApiUrl('devnet'));
-    const signature = await connection.requestAirdrop(wallet.publicKey, LAMPORTS_PER_SOL);
-
-    await connection.confirmTransaction(signature, 'confirmed');
-
-    const lamports = await connection.getBalance(wallet.publicKey, 'confirmed');
-    const balance = lamports / LAMPORTS_PER_SOL;
-
-    console.log(`[requestAirdrop] success, balance is now ${balance} sol`);
-  }
 
   useEffect(() => {
     if (
@@ -80,15 +57,11 @@ export default function CourseGrid() {
 
   return (
     <div className="place-content-center flex flex-wrap p-5 gap-4">
-      <button onClick={addSol} className="cta-button submit-gif-button"> Add SOL</button>
-      <button onClick={getCourses} className="cta-button submit-gif-button"> Get Courses</button>
-
-      {courses.map((course: any, index: any) => {
-        <div>
-          <h1>{course.account.title}</h1>
-          {/* <CourseCard title={course.account.title}></CourseCard> */}
+      {wallet && courses && courses.map((course: any, index: number) => (
+        <div key={index}>
+          <CourseCard title={course.account.title}></CourseCard>
         </div>
-      })}
+      ))}
     </div>
   )
 }
