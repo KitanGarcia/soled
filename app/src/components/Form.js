@@ -5,6 +5,7 @@ import IDL from '../../../target/idl/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
 export default function Form({ setShowModal }) {
+  const formRef = useRef();
   const titleRef = useRef();
   const descriptionRef = useRef();
   const thumbnailUrlRef = useRef();
@@ -55,23 +56,37 @@ export default function Form({ setShowModal }) {
       setShowModal(false);
 
       // Create Course account
-      await program.rpc.createCourse(title, description, thumbnailUrl, {
-        accounts: {
-          course: course.publicKey,
-          authority: connectedWallet.publicKey,
-          systemProgram: anchor.web3.SystemProgram.programId,
-        },
-        signers: [course],
-      });
-
       try {
-        const courseAccount = await program.account.course.fetch(
-          course.publicKey
+        await program.rpc.createCourse(
+          'title',
+          'description',
+          'https://via.placeholder.com/600x400',
+          {
+            accounts: {
+              course: course.publicKey,
+              authority: connectedWallet.publicKey,
+              systemProgram: anchor.web3.SystemProgram.programId,
+            },
+            signers: [course],
+          }
         );
-        console.log('COURSE ACCOUNT', courseAccount);
-      } catch {
-        console.log('COURSE UNABLE TO BE CREATED');
+
+        try {
+          const courseAccount = await program.account.course.fetch(
+            course.publicKey
+          );
+        } catch {
+          console.error('Course unable to be created.');
+        }
+      } catch (error) {
+        console.error(error);
       }
+    }
+  };
+
+  const closeModal = (event) => {
+    if (!formRef.current.contains(event.target)) {
+      console.log('AAA');
     }
   };
 
@@ -79,16 +94,23 @@ export default function Form({ setShowModal }) {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.add('text-main-text');
     e.target.classList.add('border-main-text');
+    e.target.classList.add('text-main-text');
   };
 
   const blurInput = (e, field) => {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.remove('text-main-text');
     e.target.classList.remove('border-main-text');
+    e.target.classList.remove('text-main-text');
   };
 
   return (
-    <div className="absolute w-2/4 h-2/4 top-0 bottom-0 rounded-xl left-0 right-0 m-auto shadow-xl border border-card-border-color-start bg-fg-color">
+    <div
+      className="absolute form w-2/4 h-2/4 top-0 bottom-0 rounded-xl left-0 right-0 m-auto shadow-xl border border-card-border-color-start bg-fg-color"
+      id="form"
+      ref={formRef}
+      onClick={(e) => closeModal(e)}
+    >
       <div className="bg-fg-color px-4 pt-5 pb-4 h-3/4 rounded-xl">
         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
           <h3
@@ -140,11 +162,11 @@ export default function Form({ setShowModal }) {
           </div>
         </div>
       </div>
-      <div class="bg-gray-50 px-4 pt-10 sm:flex sm:flex-row-reverse sm:px-6">
+      <div className="bg-gray-50 px-4 pt-10 sm:flex sm:flex-row-reverse sm:px-6">
         <button
           onClick={() => createNewCourse()}
           type="button"
-          class="inline-flex w-full justify-center rounded-md border border-card-border-color-start bg-like-btn px-4 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:text-main-text sm:ml-3 sm:w-auto sm:text-sm"
+          className="inline-flex w-full justify-center rounded-md border border-card-border-color-start bg-like-btn px-4 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:text-main-text sm:ml-3 sm:w-auto sm:text-sm"
         >
           Add Course
         </button>

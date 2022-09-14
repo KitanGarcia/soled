@@ -5,16 +5,19 @@ export default function CourseCard(props) {
     <div className="w-[400px] bg-fg-color rounded-xl space-x-4 overflow-hidden">
       <div className="center p-6">
         {console.log(props.thumbnailUrl)}
-        <img className="rounded-xl h-[275px] w-[350px]" src={props.thumbnailUrl} />
+        <img
+          className="rounded-xl h-[275px] w-[350px]"
+          src={props.thumbnailUrl}
+        />
       </div>
       <div>
         <div className="card-title">{props.title}</div>
       </div>
       <div className="max-h-16 overflow-hidden pt-5">
-        <div className="text-secondary-text">
-          Rating:
-        </div>
-        <strong className="text-transparent font-normal bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">{props.rating}</strong>{' '}
+        <div className="text-secondary-text">Rating:</div>
+        <strong className="text-transparent font-normal bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
+          {props.rating}
+        </strong>{' '}
       </div>
       <div className="pt-5 pb-5 flex">
         <p className="text-secondary-text"> tech/community: </p>
@@ -25,7 +28,7 @@ export default function CourseCard(props) {
 
       <div className="flex place-content-between border-t-2 border-dashed border-t-card-border-color-start">
         <div className="flex-row">
-          <div className = "card-title pt-2 pb-2">
+          <div className="card-title pt-2 pb-2">
             {props.price} SOL ~ {34 * props.price}$
           </div>
           <div className="flex gap-4 text-secondary-text">
@@ -41,6 +44,6 @@ export default function CourseCard(props) {
           </button>
         </div>
       </div>
-  </div>
+    </div>
   );
 }
