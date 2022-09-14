@@ -6,7 +6,9 @@ use crate::*;
 pub fn create_course(
     ctx: Context<CreateCourse>,
     title: String,
-    description: String,
+    rating: String,
+    price: u32,
+    lessons: u32,
     thumbnail_url: String,
 ) -> Result<()> {
     let course: &mut Account<Course> = &mut ctx.accounts.course;
@@ -14,7 +16,9 @@ pub fn create_course(
 
     course.authority = *authority.key;
     course.title = title;
-    course.description = description;
+    course.rating = rating;
+    course.price = price;
+    course.lessons = lessons;
     course.thumbnail_url = thumbnail_url;
 
     Ok(())
@@ -31,7 +35,7 @@ pub fn delete_course(_ctx: Context<DeleteCourse>) -> Result<()> {
 // Data Validators
 // 
 #[derive(Accounts)]
-#[instruction(title: String, description: String, thumbnail_url: String)]
+#[instruction(title: String, rating: String, price: u32, lessons: u32, thumbnail_url: String)]
 pub struct CreateCourse<'info> {
     // Create account of type Course and assign creator's pubkey as the payer
     // This also makes sure that we have only one course for the following combination
@@ -71,7 +75,9 @@ pub struct DeleteCourse<'info> {
 pub struct Course {
     pub authority: Pubkey,
     pub title: String,
-    pub description: String,
+    pub rating: String,
+    pub price: u32,
+    pub lessons: u32,
     pub thumbnail_url: String,
 }
 
@@ -81,7 +87,9 @@ const DISCRIMINATOR_LENGTH: usize = 8;
 const PUBKEY_LENGTH: usize = 32;
 const STRING_LENGTH_PREFIX: usize = 4;
 const TITLE_LENGTH: usize = 20 * 4;
-const DESCRIPTION_LENGTH: usize = 200 * 4;
+const RATING_LENGTH: usize = 200 * 4;
+const PRICE_LENGTH: usize = 32;
+const LESSONS_LENGTH: usize = 32;
 const THUMBNAIL_URL_LENGTH: usize = 300 * 4;
 
 impl Course {
@@ -90,7 +98,9 @@ impl Course {
         + STRING_LENGTH_PREFIX 
         + TITLE_LENGTH 
         + STRING_LENGTH_PREFIX 
-        + DESCRIPTION_LENGTH 
+        + RATING_LENGTH 
+        + PRICE_LENGTH
+        + LESSONS_LENGTH
         + STRING_LENGTH_PREFIX
         + THUMBNAIL_URL_LENGTH;
 }

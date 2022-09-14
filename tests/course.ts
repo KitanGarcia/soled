@@ -53,8 +53,10 @@ describe("course", () => {
 
       await program.rpc.createCourse(
         "1st course title",
-        "1st course description",
-        "thumbnail url",
+        "Promising",
+        1,
+        32,
+        "https://pngimg.com/uploads/cat/small/cat_PNG50550.png",
         {
           accounts: {
             course: course.publicKey,
@@ -66,17 +68,15 @@ describe("course", () => {
         }
       );
 
-      //await program.provider.send(txn, signers);
-      //await connection.sendTransaction(txn, [course]);
-      //await program.provider.sendAndConfirm(txn);
       const courseAccount = await program.account.course.fetch(
         course.publicKey
       );
-      console.log("COURSE ACCOUNT", courseAccount);
 
       assert.equal(courseAccount.title, "1st course title");
-      assert.equal(courseAccount.description, "1st course description");
-      assert.equal(courseAccount.thumbnailUrl, "thumbnail url");
+      assert.equal(courseAccount.rating, "Promising");
+      assert.equal(courseAccount.price, 1);
+      assert.equal(courseAccount.lessons, 32);
+      assert.equal(courseAccount.thumbnailUrl, "https://pngimg.com/uploads/cat/small/cat_PNG50550.png");
     });
   });
 });

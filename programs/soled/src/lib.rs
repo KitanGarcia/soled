@@ -32,10 +32,12 @@ pub mod soled {
     pub fn create_course(
         ctx: Context<CreateCourse>,
         title: String,
-        description: String,
+        rating: String,
+        price: u32,
+        lessons: u32,
         thumbnail_url: String,
     ) -> Result<()> {
-        components::create_course(ctx, title, description, thumbnail_url)
+        components::create_course(ctx, title, rating, price, lessons, thumbnail_url)
     }
 
     pub fn delete_course(ctx: Context<DeleteCourse>) -> Result<()> {

@@ -4,18 +4,17 @@ export default function CourseCard(props) {
   return (
     <div className="w-[400px] bg-fg-color rounded-xl space-x-4 overflow-hidden">
       <div className="center p-6">
-        <img className="rounded-xl h-[275px] w-[275px]"
-          src={ props.thumbnail_url }
-        />
+        {console.log(props.thumbnailUrl)}
+        <img className="rounded-xl h-[275px] w-[350px]" src={props.thumbnailUrl} />
       </div>
       <div>
         <div className="card-title">{props.title}</div>
       </div>
-      <div className="pt-5">
+      <div className="max-h-16 overflow-hidden pt-5">
         <div className="text-secondary-text">
           Rating:
         </div>
-        <strong className="text-transparent font-normal bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">Promising</strong>{' '}
+        <strong className="text-transparent font-normal bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">{props.rating}</strong>{' '}
       </div>
       <div className="pt-5 pb-5 flex">
         <p className="text-secondary-text"> tech/community: </p>
@@ -27,10 +26,10 @@ export default function CourseCard(props) {
       <div className="flex place-content-between border-t-2 border-dashed border-t-card-border-color-start">
         <div className="flex-row">
           <div className = "card-title pt-2 pb-2">
-            1.4 SOL ~ 10$
+            {props.price} SOL ~ {34 * props.price}$
           </div>
           <div className="flex gap-4 text-secondary-text">
-            <p className="truncate"> 34 lessons</p>
+            <p className="truncate"> {props.lessons} lessons</p>
             <p className="truncate"> |</p>
             <p className="truncate">6 practices </p>
           </div>

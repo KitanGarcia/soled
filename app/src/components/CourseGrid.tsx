@@ -38,18 +38,48 @@ export default function CourseGrid() {
         const allCourses = await program.account.course.all()
   
         setCourses(allCourses)
-  
       } catch (error) {
         console.error(error);
       }
     }
   }, [wallet, program]);
 
+  // const addCourse = async () => {
+  //   if (wallet && program) {
+  //     const newCourse = anchor.web3.Keypair.generate();
+  //     console.log(newCourse.publicKey);
+
+  //     const title = "test title";
+  //     const rating = "Promising";
+  //     const price = 1;
+  //     const lessons = 10;
+  //     const thumbnail_url = "https://media1.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif?cid=ecf05e475x0rqm5t7hnj83gtjsv1q0wxymurck3yj16rlk2x&rid=giphy.gif&ct=g";
+
+  //     try {
+  //       await program.rpc.createCourse(
+  //         title,
+  //         rating,
+  //         price, 
+  //         lessons,
+  //         thumbnail_url,
+  //         {
+  //         accounts: {
+  //           authority: wallet!.publicKey,
+  //           course: newCourse.publicKey,
+  //           systemProgram: anchor.web3.SystemProgram.programId,
+  //         },
+  //         signers: [newCourse]
+  //       });  
+
+  //       await getCourses();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  // }
+
   useEffect(() => {
-    if (
-      wallet &&
-      program
-    ) {
+    if (wallet && program) {
       getCourses();
     }
   }, [wallet, program, getCourses]);
@@ -60,7 +90,10 @@ export default function CourseGrid() {
         <div key={index}>
           <CourseCard 
             title={course.account.title}
-            thumbnail_url={course.account.thumbnail_url}
+            rating={course.account.rating}
+            price={course.account.price}
+            lessons={course.account.lessons}
+            thumbnailUrl={course.account.thumbnailUrl}
           />
         </div>
       ))}
