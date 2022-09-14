@@ -14,7 +14,7 @@ const MyCourses: NextPage = () => {
   };
 
   return (
-    <div className={styles.container}>
+    <div className="bg-bg-color">
       <NavBar></NavBar>
       <main className={styles.main}>
         <h1 className={styles.title}>All of my courses</h1>
