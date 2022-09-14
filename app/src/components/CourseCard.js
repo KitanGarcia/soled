@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { WrenchIcon, HeartIcon } from '@heroicons/react/24/solid';
 
-export default function CourseCard() {
+export default function CourseCard(props) {
   return (
     <div className="w-[400px] bg-fg-color rounded-xl space-x-4 overflow-hidden">
       <div className="center p-6">
@@ -10,7 +10,7 @@ export default function CourseCard() {
         />
       </div>
       <div>
-        <div className="card-title">SOLANA setup and installation</div>
+        <div className="card-title">{props.title}</div>
       </div>
       <div className="pt-5">
         <div className="text-secondary-text">
