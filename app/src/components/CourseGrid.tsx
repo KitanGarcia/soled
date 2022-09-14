@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { ConfirmOptions } from '@solana/web3.js';
+import { Connection, clusterApiUrl, ConfirmOptions, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { Program, AnchorProvider } from '@project-serum/anchor';
 import * as anchor from '@project-serum/anchor';
@@ -8,7 +8,7 @@ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import CourseCard from './CourseCard';
 import IDL from '../../../target/idl/soled.json';
 
-const PROGRAM_ID = new anchor.web3.PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+const PROGRAM_ID = new anchor.web3.PublicKey("927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe");
 
 const OPTS = {
   preflightCommitment: "processed",
@@ -37,7 +37,9 @@ export default function CourseGrid() {
   const getCourses = useCallback(async () => {
     if (wallet && program) {
       try {
-        const courses = await program.account.courses.all()
+        const courses = await program.account.course.all()
+
+        console.log(courses);
   
         setCourses(courses)
   
@@ -77,8 +79,26 @@ export default function CourseGrid() {
     }
   }
 
+  const addSol = async () => {
+    if (!wallet) {
+      console.error('wallet key not found');
+      return;
+    }
+
+    const connection = new Connection(clusterApiUrl('devnet'));
+    const signature = await connection.requestAirdrop(wallet.publicKey, LAMPORTS_PER_SOL);
+
+    await connection.confirmTransaction(signature, 'confirmed');
+
+    const lamports = await connection.getBalance(wallet.publicKey, 'confirmed');
+    const balance = lamports / LAMPORTS_PER_SOL;
+
+    console.log(`[requestAirdrop] success, balance is now ${balance} sol`);
+  }
+
   return (
     <div className="grid grid-cols-4 gap-4">
+      <button onClick={addSol} className="cta-button submit-gif-button"> Add SOL</button>
       <button onClick={addCourse} className="cta-button submit-gif-button"> Add Course</button>
 
       {courses.map((course: any) => {

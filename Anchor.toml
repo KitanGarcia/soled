@@ -1,15 +1,19 @@
 [features]
 seeds = false
 skip-lint = false
+
 [programs.localnet]
-soled = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+soled = "927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe"
+
+[programs.devnet]
+soled = "927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
-wallet = "/home/kitan/.config/solana/id.json"
+cluster = "devnet"
+wallet = "/Users/stellaw/.config/solana/id.json"
 
 [scripts]
 test = "yarn run ts-mocha -p ./tsconfig.json -t 1000000 tests/**/*.ts"
