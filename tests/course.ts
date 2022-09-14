@@ -3,7 +3,7 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
 
-describe("soled", () => {
+describe("course", () => {
   // Configure the client to use the local cluster.
   anchor.setProvider(anchor.AnchorProvider.env());
 
@@ -39,6 +39,7 @@ describe("soled", () => {
         console.log(deletedCourse);
       } catch (error) {
         const errorMsg = "Error: Account does not exist";
+
         // Check that output is the same as above message
         assert.equal(
           error.toString().substring(0, error.toString().lastIndexOf(" ")),
@@ -71,7 +72,7 @@ describe("soled", () => {
       const courseAccount = await program.account.course.fetch(
         course.publicKey
       );
-      console.log("ACCOUNT", courseAccount);
+      console.log("COURSE ACCOUNT", courseAccount);
 
       assert.equal(courseAccount.title, "1st course title");
       assert.equal(courseAccount.description, "1st course description");

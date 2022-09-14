@@ -47,13 +47,11 @@ pub struct CreateCourse<'info> {
     pub authority: Signer<'info>,
 
     // Ensure System Program is the official one from Solana and handle errors
-    // Ensure benefit_number == num_benefits + 1
     pub system_program: Program<'info, System>,
 }
 
 #[derive(Accounts)]
 pub struct DeleteCourse<'info> {
-    // Create account of type Course and assign creators's pubkey as the payer
     #[account(mut, close=authority)]
     pub course: Account<'info, Course>,
 

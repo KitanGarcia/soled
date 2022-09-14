@@ -2,13 +2,16 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-soled = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+soled = "927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe"
+
+[programs.devnet]
+soled = "927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe"
 
 [registry]
 url = "https://api.apr.dev"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/home/kitan/.config/solana/id.json"
 
 [scripts]
