@@ -5,7 +5,7 @@ export default function CourseCard(props) {
     <div className="w-[400px] bg-fg-color rounded-xl space-x-4 overflow-hidden">
       <div className="center p-6">
         <img className="rounded-xl h-[275px] w-[275px]"
-          src="https://placeimg.com/400/225/arch"
+          src={ props.thumbnail_url }
         />
       </div>
       <div>

@@ -33,7 +33,6 @@ export default function CourseGrid() {
   }, [wallet]);
 
   const getCourses = useCallback(async () => {
-    console.log("getCourses");
     if (wallet && program) {
       try {
         const allCourses = await program.account.course.all()
@@ -59,7 +58,10 @@ export default function CourseGrid() {
     <div className="place-content-center flex flex-wrap p-5 gap-4">
       {wallet && courses && courses.map((course: any, index: number) => (
         <div key={index}>
-          <CourseCard title={course.account.title}></CourseCard>
+          <CourseCard 
+            title={course.account.title}
+            thumbnail_url={course.account.thumbnail_url}
+          />
         </div>
       ))}
     </div>
