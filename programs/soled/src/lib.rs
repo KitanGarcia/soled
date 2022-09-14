@@ -3,7 +3,8 @@ use anchor_lang::prelude::*;
 pub mod components;
 use components::*;
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe");
+
 
 #[program]
 pub mod soled {

@@ -8,21 +8,19 @@ import Footer from '../components/layout/Footer';
 import CourseGrid from '../components/CourseGrid';
 
 const Dashboard: NextPage = () => {
-    return (
-        <div className={styles.container}>
-            <NavBar></NavBar>
+  return (
+    <div className="bg-bg-color text-main-text">
+      <NavBar></NavBar>
 
-            <main className={styles.main}>
-                <h1 className={styles.title}>
-                    Courses
-                </h1>
+      <main className={styles.main}>
+        <h1 className={styles.title}>Courses</h1>
 
-                <CourseGrid />
-            </main>
+        <CourseGrid />
+      </main>
 
-            <Footer />
-        </div>
-    );
+      <Footer />
+    </div>
+  );
 };
 
 export default Dashboard;
