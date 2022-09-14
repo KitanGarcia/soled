@@ -2,7 +2,7 @@ import * as anchor from '@project-serum/anchor';
 import { ConfirmOptions } from '@solana/web3.js';
 
 export const PROGRAM_ID = new anchor.web3.PublicKey(
-  'Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS'
+  '927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe'
 );
 
 export const OPTS = {
