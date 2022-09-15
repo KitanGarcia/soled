@@ -4,7 +4,7 @@ import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import IDL from '../../../target/idl/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
-export default function Form({ setShowModal }) {
+export default function CreateCourseForm({ setShowModal }) {
   const titleRef = useRef();
   const descriptionRef = useRef();
   const thumbnailUrlRef = useRef();
@@ -31,6 +31,8 @@ export default function Form({ setShowModal }) {
     const description = descriptionRef.current.value;
     const thumbnailUrl = thumbnailUrlRef.current.value;
 
+    setShowModal(false);
+
     if (connectedWallet && program && title && description && thumbnailUrl) {
       // Create account on chain
       /*
@@ -46,8 +48,6 @@ export default function Form({ setShowModal }) {
       */
 
       const course = anchor.web3.Keypair.generate();
-
-      setShowModal(false);
 
       // Create Course account
       try {
