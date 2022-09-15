@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import React, { useState } from 'react';
-
+// hello÷
 import styles from '../styles/Home.module.css';
 import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
