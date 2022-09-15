@@ -5,7 +5,6 @@ import IDL from '../../../target/idl/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
 export default function Form({ setShowModal }) {
-  const formRef = useRef();
   const titleRef = useRef();
   const descriptionRef = useRef();
   const thumbnailUrlRef = useRef();
@@ -31,11 +30,6 @@ export default function Form({ setShowModal }) {
     const title = titleRef.current.value;
     const description = descriptionRef.current.value;
     const thumbnailUrl = thumbnailUrlRef.current.value;
-
-    console.log(connectedWallet);
-    console.log(title);
-    console.log(description);
-    console.log(thumbnailUrl);
 
     if (connectedWallet && program && title && description && thumbnailUrl) {
       // Create account on chain
@@ -84,12 +78,6 @@ export default function Form({ setShowModal }) {
     }
   };
 
-  const closeModal = (event) => {
-    if (!formRef.current.contains(event.target)) {
-      console.log('AAA');
-    }
-  };
-
   const focusInput = (e, field) => {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.add('text-main-text');
@@ -108,17 +96,23 @@ export default function Form({ setShowModal }) {
     <div
       className="absolute form w-2/4 h-2/4 top-0 bottom-0 rounded-xl left-0 right-0 m-auto shadow-xl border border-card-border-color-start bg-fg-color"
       id="form"
-      ref={formRef}
-      onClick={(e) => closeModal(e)}
     >
       <div className="bg-fg-color px-4 pt-5 pb-4 h-3/4 rounded-xl">
         <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-          <h3
-            className="text-lg font-medium leading-6 text-gray-900"
-            id="modal-title"
-          >
-            Create Course
-          </h3>
+          <div className="flex justify-between">
+            <h3
+              className="text-lg mx-4 font-medium leading-6 text-gray-900"
+              id="modal-title"
+            >
+              Create Course
+            </h3>
+            <h3
+              className="mx-4 border-2 w-[30px] h-[30px] rounded-full text-center hover:cursor-pointer hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:border-main-text hover:text-main-text"
+              onClick={() => setShowModal(false)}
+            >
+              X
+            </h3>
+          </div>
           <div className="mt-2 flex flex-col items-center">
             <div className="mt-6 w-3/5">
               <label className="title-label relative left-8 top-5 bg-fg-color">
