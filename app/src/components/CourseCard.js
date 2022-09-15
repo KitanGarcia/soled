@@ -13,11 +13,7 @@ export default function CourseCard(props) {
       <div>
         <div className="card-title pl-6">{props.title}</div>
       </div>
-<<<<<<< Updated upstream
-      <div className="max-h-16 overflow-hidden pt-5">
-=======
       <div className="max-h-16 overflow-hidden pt-5 pl-6">
->>>>>>> Stashed changes
         <div className="text-secondary-text">Rating:</div>
         <strong className="text-transparent font-normal bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
           {props.rating}
