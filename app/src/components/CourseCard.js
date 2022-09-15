@@ -4,7 +4,6 @@ export default function CourseCard(props) {
   return (
     <div className="w-[400px] bg-fg-color rounded-xl overflow-hidden">
       <div className="center p-6">
-        {console.log(props.thumbnailUrl)}
         <img
           className="rounded-xl h-[275px] w-[350px]"
           src={props.thumbnailUrl}
