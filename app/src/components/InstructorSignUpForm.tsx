@@ -1,13 +1,17 @@
-import { useRef, useMemo, useEffect } from 'react';
+import { useRef, useMemo, useEffect, Dispatch, SetStateAction } from 'react';
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import IDL from '../../../target/idl/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
-export default function Form({ setShowModal }) {
-  const titleRef = useRef();
-  const descriptionRef = useRef();
-  const thumbnailUrlRef = useRef();
+interface formProps {
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function InstructorSignUpForm({ setShowModal }: formProps) {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const thumbnailUrlRef = useRef<HTMLInputElement>(null);
 
   const connectedWallet = useAnchorWallet();
   const program = useMemo(() => {
@@ -17,19 +21,27 @@ export default function Form({ setShowModal }) {
         connectedWallet,
         OPTS
       );
-      return new anchor.Program(IDL, PROGRAM_ID, provider);
+      return new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
     }
     return null;
   }, [connectedWallet]);
 
   useEffect(() => {
-    titleRef?.current?.focus();
+    if (titleRef && titleRef.current) {
+      titleRef.current.focus();
+    }
   }, [titleRef]);
 
   const createNewCourse = async () => {
-    const title = titleRef.current.value;
-    const description = descriptionRef.current.value;
-    const thumbnailUrl = thumbnailUrlRef.current.value;
+    const title = titleRef && titleRef.current ? titleRef.current.value : null;
+    const description =
+      descriptionRef && descriptionRef.current
+        ? descriptionRef.current.value
+        : null;
+    const thumbnailUrl =
+      thumbnailUrlRef && thumbnailUrlRef.current
+        ? thumbnailUrlRef.current.value
+        : null;
 
     if (connectedWallet && program && title && description && thumbnailUrl) {
       // Create account on chain
@@ -78,14 +90,20 @@ export default function Form({ setShowModal }) {
     }
   };
 
-  const focusInput = (e, field) => {
+  const focusInput = (
+    e: React.FocusEvent<HTMLInputElement, Element>,
+    field: string
+  ) => {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.add('text-main-text');
     e.target.classList.add('border-main-text');
     e.target.classList.add('text-main-text');
   };
 
-  const blurInput = (e, field) => {
+  const blurInput = (
+    e: React.FocusEvent<HTMLInputElement, Element>,
+    field: string
+  ) => {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.remove('text-main-text');
     e.target.classList.remove('border-main-text');
