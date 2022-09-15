@@ -31,6 +31,8 @@ export default function CreateCourseForm({ setShowModal }) {
     const description = descriptionRef.current.value;
     const thumbnailUrl = thumbnailUrlRef.current.value;
 
+    setShowModal(false);
+
     if (connectedWallet && program && title && description && thumbnailUrl) {
       // Create account on chain
       /*
@@ -46,8 +48,6 @@ export default function CreateCourseForm({ setShowModal }) {
       */
 
       const course = anchor.web3.Keypair.generate();
-
-      setShowModal(false);
 
       // Create Course account
       try {

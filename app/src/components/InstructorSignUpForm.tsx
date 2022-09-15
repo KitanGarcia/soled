@@ -9,9 +9,9 @@ interface formProps {
 }
 
 export default function InstructorSignUpForm({ setShowModal }: formProps) {
-  const titleRef = useRef<HTMLInputElement>(null);
-  const descriptionRef = useRef<HTMLInputElement>(null);
-  const thumbnailUrlRef = useRef<HTMLInputElement>(null);
+  const usernameRef = useRef<HTMLInputElement>(null);
+  const profilePicUrlRef = useRef<HTMLInputElement>(null);
+  const backgroundPicUrlRef = useRef<HTMLInputElement>(null);
 
   const connectedWallet = useAnchorWallet();
   const program = useMemo(() => {
@@ -27,23 +27,32 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
   }, [connectedWallet]);
 
   useEffect(() => {
-    if (titleRef && titleRef.current) {
-      titleRef.current.focus();
+    if (usernameRef && usernameRef.current) {
+      usernameRef.current.focus();
     }
-  }, [titleRef]);
+  }, [usernameRef]);
 
-  const createNewCourse = async () => {
-    const title = titleRef && titleRef.current ? titleRef.current.value : null;
-    const description =
-      descriptionRef && descriptionRef.current
-        ? descriptionRef.current.value
+  const createInstructor = async () => {
+    const username =
+      usernameRef && usernameRef.current ? usernameRef.current.value : null;
+    const profilePicUrl =
+      profilePicUrlRef && profilePicUrlRef.current
+        ? profilePicUrlRef.current.value
         : null;
-    const thumbnailUrl =
-      thumbnailUrlRef && thumbnailUrlRef.current
-        ? thumbnailUrlRef.current.value
+    const backgroundPicUrl =
+      backgroundPicUrlRef && backgroundPicUrlRef.current
+        ? backgroundPicUrlRef.current.value
         : null;
 
-    if (connectedWallet && program && title && description && thumbnailUrl) {
+    setShowModal(false);
+
+    if (
+      connectedWallet &&
+      program &&
+      username &&
+      profilePicUrl &&
+      backgroundPicUrl
+    ) {
       // Create account on chain
       /*
       const creatorSeeds = [
@@ -57,30 +66,29 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
       );
       */
 
-      const course = anchor.web3.Keypair.generate();
+      const instructor = anchor.web3.Keypair.generate();
 
-      setShowModal(false);
-
-      // Create Course account
+      // Create Instructor account
       try {
-        await program.rpc.createCourse(
-          'title',
-          'description',
-          'https://via.placeholder.com/600x400',
+        await program.rpc.createInstructor(
+          username,
+          profilePicUrl,
+          backgroundPicUrl,
           {
             accounts: {
-              course: course.publicKey,
+              instructor: instructor.publicKey,
               authority: connectedWallet.publicKey,
               systemProgram: anchor.web3.SystemProgram.programId,
             },
-            signers: [course],
+            signers: [instructor],
           }
         );
 
         try {
-          const courseAccount = await program.account.course.fetch(
-            course.publicKey
+          const instructorAccount = await program.account.instructor.fetch(
+            instructor.publicKey
           );
+          console.log(instructorAccount);
         } catch {
           console.error('Course unable to be created.');
         }
@@ -122,7 +130,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
               className="text-lg mx-4 font-medium leading-6 text-gray-900"
               id="modal-title"
             >
-              Create Course
+              Sign Up
             </h3>
             <h3
               className="mx-4 border-2 w-[30px] h-[30px] rounded-full text-center hover:cursor-pointer hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:border-main-text hover:text-main-text"
@@ -133,42 +141,42 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
           </div>
           <div className="mt-2 flex flex-col items-center">
             <div className="mt-6 w-3/5">
-              <label className="title-label relative left-8 top-5 bg-fg-color">
-                Title
+              <label className="username-label relative left-8 top-5 bg-fg-color">
+                Username
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
-                placeholder="My Course"
+                className="border-2 placeholder-secondary-text placeholder-opacity-25 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                placeholder="user12345"
                 type="text"
-                ref={titleRef}
-                onFocus={(e) => focusInput(e, 'title')}
-                onBlur={(e) => blurInput(e, 'title')}
+                ref={usernameRef}
+                onFocus={(e) => focusInput(e, 'username')}
+                onBlur={(e) => blurInput(e, 'username')}
               ></input>
             </div>
             <div className="mt-6 w-3/5">
-              <label className="description-label relative bg-fg-color left-8 top-5 bg-fg-color">
-                Description
+              <label className="profilePic-label relative bg-fg-color left-8 top-5 bg-fg-color">
+                Profile Picture URL
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
-                placeholder="Course Description"
+                className="border-2 placeholder-secondary-text placeholder-opacity-25 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                placeholder="https://via.placeholder.com/30x30"
                 type="text"
-                ref={descriptionRef}
-                onFocus={(e) => focusInput(e, 'description')}
-                onBlur={(e) => blurInput(e, 'description')}
+                ref={profilePicUrlRef}
+                onFocus={(e) => focusInput(e, 'profilePic')}
+                onBlur={(e) => blurInput(e, 'profilePic')}
               ></input>
             </div>
             <div className="mt-6 w-3/5">
-              <label className="relative thumbnailUrl-label bg-fg-color left-8 top-5 bg-fg-color">
-                Thumbnail URL
+              <label className="relative backgroundPic-label bg-fg-color left-8 top-5 bg-fg-color">
+                Background Picture URL
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
-                placeholder="https://via.placeholder.com/600x400"
+                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8 placeholder-secondary-text placeholder-opacity-25"
+                placeholder="https://via.placeholder.com/800x200"
                 type="text"
-                ref={thumbnailUrlRef}
-                onFocus={(e) => focusInput(e, 'thumbnailUrl')}
-                onBlur={(e) => blurInput(e, 'thumbnailUrl')}
+                ref={backgroundPicUrlRef}
+                onFocus={(e) => focusInput(e, 'backgroundPic')}
+                onBlur={(e) => blurInput(e, 'backgroundPic')}
               ></input>
             </div>
           </div>
@@ -176,11 +184,11 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
       </div>
       <div className="bg-gray-50 px-4 pt-10 sm:flex sm:flex-row-reverse sm:px-6">
         <button
-          onClick={() => createNewCourse()}
+          onClick={() => createInstructor()}
           type="button"
           className="inline-flex w-full justify-center rounded-md border border-card-border-color-start bg-like-btn px-4 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:text-main-text sm:ml-3 sm:w-auto sm:text-sm"
         >
-          Add Course
+          Register
         </button>
       </div>
     </div>
