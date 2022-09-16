@@ -62,7 +62,7 @@ const Home: NextPage = () => {
     <div className={styles.container}>
       <NavBar></NavBar>
       <main className={styles.main}>
-        <div className="ml-10 mb-16 w-2/5">
+        <div className="ml-10 mb-16 w-2/6">
           <h1 className="font-bold leading-9 text-2xl mb-2 text-main-text">
             TOP INSTRUCTORS THIS MONTH
           </h1>
