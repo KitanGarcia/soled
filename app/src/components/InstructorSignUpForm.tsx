@@ -145,7 +145,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
                 Username
               </label>
               <input
-                className="border-2 placeholder-secondary-text placeholder-opacity-25 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                className="border-2 placeholder-secondary-text placeholder-opacity-50 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
                 placeholder="user12345"
                 type="text"
                 ref={usernameRef}
@@ -158,7 +158,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
                 Profile Picture URL
               </label>
               <input
-                className="border-2 placeholder-secondary-text placeholder-opacity-25 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                className="border-2 placeholder-secondary-text placeholder-opacity-50 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
                 placeholder="https://via.placeholder.com/30x30"
                 type="text"
                 ref={profilePicUrlRef}
@@ -171,7 +171,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
                 Background Picture URL
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8 placeholder-secondary-text placeholder-opacity-25"
+                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8 placeholder-secondary-text placeholder-opacity-50"
                 placeholder="https://via.placeholder.com/800x200"
                 type="text"
                 ref={backgroundPicUrlRef}

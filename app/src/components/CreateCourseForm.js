@@ -119,7 +119,7 @@ export default function CreateCourseForm({ setShowModal }) {
                 Title
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                className="border-2 placeholder-secondary-text placeholder-opacity-50 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
                 placeholder="My Course"
                 type="text"
                 ref={titleRef}
@@ -132,7 +132,7 @@ export default function CreateCourseForm({ setShowModal }) {
                 Description
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                className="border-2 placeholder-secondary-text placeholder-opacity-50 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
                 placeholder="Course Description"
                 type="text"
                 ref={descriptionRef}
@@ -145,7 +145,7 @@ export default function CreateCourseForm({ setShowModal }) {
                 Thumbnail URL
               </label>
               <input
-                className="border-2 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
+                className="border-2 placeholder-secondary-text placeholder-opacity-50 outline-0 bg-fg-color w-full rounded-full mt-2 pl-2 h-8"
                 placeholder="https://via.placeholder.com/600x400"
                 type="text"
                 ref={thumbnailUrlRef}
