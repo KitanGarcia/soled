@@ -2,7 +2,7 @@ import { WrenchIcon, HeartIcon } from '@heroicons/react/24/solid';
 
 export default function CourseCard(props) {
   return (
-    <div className="w-[400px] bg-fg-color rounded-xl overflow-hidden">
+    <div className="w-[400px] border-2 border-card-border-color-start bg-fg-color rounded-xl overflow-hidden">
       <div className="center p-6">
         <img
           className="rounded-xl h-[275px] w-[350px]"
