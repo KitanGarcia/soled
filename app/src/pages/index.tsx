@@ -10,13 +10,15 @@ import IDL from '../../../target/idl/soled.json';
 import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
 import InstructorCard from '../components/InstructorCard';
+import { Course } from '../../types/Course';
+import { Instructor } from '../../types/Instructor';
 
 const Home: NextPage = () => {
   const wallet = useAnchorWallet();
 
   /*CREATE TYPES FOR COURSES AND INSTRUCTORS*/
-  const [courses, setCourses] = useState([] as any);
-  const [instructors, setInstructors] = useState([] as any);
+  const [courses, setCourses] = useState<Array<Course>>([]);
+  const [instructors, setInstructors] = useState<Array<Instructor>>([]);
 
   const program = useMemo(() => {
     if (wallet) {
@@ -28,10 +30,14 @@ const Home: NextPage = () => {
   const getInstructors = useCallback(async () => {
     if (wallet && program) {
       try {
-        const allInstructors = await program.account.instructor.all();
+        const allInstructors = await program.account.instructor
+          .all()
+          .then((instructors) =>
+            instructors.map((instructor) => instructor.account)
+          );
         console.log(allInstructors);
 
-        setInstructors(allInstructors);
+        setInstructors(allInstructors as Instructor[]);
       } catch (error) {
         console.error(error);
       }
@@ -41,10 +47,12 @@ const Home: NextPage = () => {
   const getCourses = useCallback(async () => {
     if (wallet && program) {
       try {
-        const allCourses = await program.account.course.all();
+        const allCourses = await program.account.course
+          .all()
+          .then((courses) => courses.map((course) => course.account));
         console.log(allCourses);
 
-        setCourses(allCourses);
+        setCourses(allCourses as Course[]);
       } catch (error) {
         console.error(error);
       }
@@ -72,17 +80,17 @@ const Home: NextPage = () => {
           </p>
         </div>
         <div className="flex flex-row justify-evenly">
-          {instructors.map((instructor: any, index: number) => (
+          {instructors.map((instructor: Instructor, index: number) => (
             <InstructorCard
-              username={instructor.account.username}
-              profilePicUrl={instructor.account.profilePicUrl}
-              backgroundPicUrl={instructor.account.backgroundPicUrl}
-              numFollowers={instructor.account.numFollowers}
-              numFollowing={instructor.account.numFollowing}
-              numCourses={instructor.account.numCourses}
-              rating={instructor.account.rating}
+              username={instructor.username}
+              profilePicUrl={instructor.profilePicUrl}
+              backgroundPicUrl={instructor.backgroundPicUrl}
+              numFollowers={instructor.numFollowers}
+              numFollowing={instructor.numFollowing}
+              numCourses={instructor.numCourses}
+              rating={instructor.rating}
               listNumber={index + 1}
-              key={index}
+              key={`${instructor.username}_${index}`}
             />
           ))}
         </div>

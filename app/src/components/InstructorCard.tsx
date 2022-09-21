@@ -1,15 +1,4 @@
-import { WrenchIcon, HeartIcon } from '@heroicons/react/24/solid';
-
-interface InstructorCardProps {
-  username: string;
-  profilePicUrl: string;
-  backgroundPicUrl: string;
-  numFollowers: number;
-  numFollowing: number;
-  numCourses: number;
-  rating: number;
-  listNumber: number;
-}
+import { InstructorCardProps } from '../../types/InstructorCardProps';
 
 export default function InstructorCard({
   username,
