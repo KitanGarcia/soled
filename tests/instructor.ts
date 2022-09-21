@@ -2,7 +2,6 @@ import * as assert from "assert";
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
-import { connection } from "../app/utils/Connection";
 
 describe("instructor", () => {
   // Configure the client to use the local cluster.
@@ -32,7 +31,7 @@ describe("instructor", () => {
         })
         .rpc();
 
-      // Fetch Creator and check that it no longer exists
+      // Fetch Instructor and check that it no longer exists
       try {
         const deletedInstructor = await program.account.instructor.fetch(
           instructor.publicKey
@@ -93,5 +92,47 @@ describe("instructor", () => {
       assert.equal(instructorAccount.profilePicUrl, "profile pic url");
       assert.equal(instructorAccount.backgroundPicUrl, "background pic url");
     });
+
+    /*
+    it("deletes test instructor accounts", async () => {
+      const instructors = await program.account.instructor.all();
+      // console.log("==============================================");
+      // console.log(instructors);
+
+      instructors.forEach(async (teacher) => {
+        if (teacher.account.username === "username") {
+          await program.methods
+            .deleteInstructor()
+            .accounts({
+              instructor: teacher.publicKey,
+              authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+              systemProgram: anchor.web3.SystemProgram.programId,
+            })
+            .rpc();
+
+          // Fetch Instructor and check that it no longer exists
+          try {
+            const deletedInstructor = await program.account.instructor.fetch(
+              instructor.publicKey
+            );
+            console.log(deletedInstructor);
+          } catch (error) {
+            const errorMsg = "Error: Account does not exist";
+
+            // Check that output is the same as above message
+            assert.equal(
+              error.toString().substring(0, error.toString().lastIndexOf(" ")),
+              errorMsg
+            );
+          }
+        }
+      });
+
+      const instructorsRemaining = await program.account.instructor.all();
+      instructorsRemaining.forEach(async (teacher) => {
+        assert.notEqual(teacher.account.username, "username");
+      });
+    });
+    */
   });
 });
