@@ -2,6 +2,7 @@ import * as assert from "assert";
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
+import { connection } from "../app/utils/Connection";
 
 describe("instructor", () => {
   // Configure the client to use the local cluster.
@@ -20,16 +21,16 @@ describe("instructor", () => {
   describe("creation", () => {
     const instructor = anchor.web3.Keypair.generate();
 
-    afterEach(async () => {
+    afterEach("deletes the instructor created", async () => {
       // Delete Instructor
-      await program.rpc.deleteInstructor({
-        accounts: {
+      await program.methods
+        .deleteInstructor()
+        .accounts({
           instructor: instructor.publicKey,
           authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
           systemProgram: anchor.web3.SystemProgram.programId,
-        },
-        signers: [],
-      });
+        })
+        .rpc();
 
       // Fetch Creator and check that it no longer exists
       try {
@@ -48,22 +49,37 @@ describe("instructor", () => {
       }
     });
 
-    it("can create an instructor account", async () => {
+    it("creates an instructor account", async () => {
       const signers = [instructor];
 
-      await program.rpc.createInstructor(
-        "username",
-        "profile pic url",
-        "background pic url",
-        {
-          accounts: {
-            instructor: instructor.publicKey,
-            authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
-            systemProgram: anchor.web3.SystemProgram.programId,
-          },
-          signers: signers,
-        }
+      await program.methods
+        .createInstructor("username", "profile pic url", "background pic url")
+        .accounts({
+          instructor: instructor.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .signers(signers)
+        .rpc();
+
+      /*
+      const latestBlockhash = await connection.getLatestBlockhash("processed");
+      const createInstructorTxn = new anchor.web3.Transaction({
+        feePayer: instructor.publicKey,
+        ...latestBlockhash,
+      });
+
+
+      createInstructorTxn.add(
+        program.methods
+          .createInstructor("username", "profile pic url", "background pic url")
+          .accounts({
+          instructor: instructor.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        }).signers(signers)
       );
+      */
 
       //await program.provider.send(txn, signers);
       //await connection.sendTransaction(txn, [course]);

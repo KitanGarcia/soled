@@ -22,14 +22,14 @@ describe("course", () => {
 
     afterEach(async () => {
       // Delete Course
-      await program.rpc.deleteCourse({
-        accounts: {
+      await program.methods
+        .deleteCourse()
+        .accounts({
           course: course.publicKey,
           authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
           systemProgram: anchor.web3.SystemProgram.programId,
-        },
-        signers: [],
-      });
+        })
+        .rpc();
 
       // Fetch Creator and check that it no longer exists
       try {
@@ -51,22 +51,22 @@ describe("course", () => {
     it("can create a Course account", async () => {
       const signers = [course];
 
-      await program.rpc.createCourse(
-        "1st course title",
-        "Promising",
-        1,
-        32,
-        "https://pngimg.com/uploads/cat/small/cat_PNG50550.png",
-        {
-          accounts: {
-            course: course.publicKey,
-            //authority: program.provider.wallet.publicKey,
-            authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
-            systemProgram: anchor.web3.SystemProgram.programId,
-          },
-          signers: signers,
-        }
-      );
+      await program.methods
+        .createCourse(
+          "1st course title",
+          "Promising",
+          1,
+          32,
+          "https://pngimg.com/uploads/cat/small/cat_PNG50550.png"
+        )
+        .accounts({
+          course: course.publicKey,
+          //authority: program.provider.wallet.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .signers(signers)
+        .rpc();
 
       const courseAccount = await program.account.course.fetch(
         course.publicKey
@@ -76,7 +76,10 @@ describe("course", () => {
       assert.equal(courseAccount.rating, "Promising");
       assert.equal(courseAccount.price, 1);
       assert.equal(courseAccount.lessons, 32);
-      assert.equal(courseAccount.thumbnailUrl, "https://pngimg.com/uploads/cat/small/cat_PNG50550.png");
+      assert.equal(
+        courseAccount.thumbnailUrl,
+        "https://pngimg.com/uploads/cat/small/cat_PNG50550.png"
+      );
     });
   });
 });
