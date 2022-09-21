@@ -1,13 +1,24 @@
-import { useRef, useMemo, useEffect } from 'react';
+import {
+  useRef,
+  useMemo,
+  useEffect,
+  FocusEvent,
+  Dispatch,
+  SetStateAction,
+} from 'react';
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import IDL from '../../../target/idl/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
-export default function CreateCourseForm({ setShowModal }) {
-  const titleRef = useRef();
-  const descriptionRef = useRef();
-  const thumbnailUrlRef = useRef();
+interface formProps {
+  setShowModal: Dispatch<SetStateAction<boolean>>;
+}
+
+export default function CreateCourseForm({ setShowModal }: formProps) {
+  const titleRef = useRef<HTMLInputElement>(null);
+  const descriptionRef = useRef<HTMLInputElement>(null);
+  const thumbnailUrlRef = useRef<HTMLInputElement>(null);
 
   const connectedWallet = useAnchorWallet();
   const program = useMemo(() => {
@@ -17,19 +28,21 @@ export default function CreateCourseForm({ setShowModal }) {
         connectedWallet,
         OPTS
       );
-      return new anchor.Program(IDL, PROGRAM_ID, provider);
+      return new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
     }
     return null;
   }, [connectedWallet]);
 
   useEffect(() => {
-    titleRef?.current?.focus();
+    if (titleRef && titleRef.current) {
+      titleRef.current.focus();
+    }
   }, [titleRef]);
 
   const createNewCourse = async () => {
-    const title = titleRef.current.value;
-    const description = descriptionRef.current.value;
-    const thumbnailUrl = thumbnailUrlRef.current.value;
+    const title = titleRef!.current!.value;
+    const description = descriptionRef!.current!.value;
+    const thumbnailUrl = thumbnailUrlRef!.current!.value;
 
     setShowModal(false);
 
@@ -78,14 +91,20 @@ export default function CreateCourseForm({ setShowModal }) {
     }
   };
 
-  const focusInput = (e, field) => {
+  const focusInput = (
+    e: FocusEvent<HTMLInputElement, Element>,
+    field: string
+  ) => {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.add('text-main-text');
     e.target.classList.add('border-main-text');
     e.target.classList.add('text-main-text');
   };
 
-  const blurInput = (e, field) => {
+  const blurInput = (
+    e: FocusEvent<HTMLInputElement, Element>,
+    field: string
+  ) => {
     const label = document.querySelector(`.${field}-label`);
     label?.classList.remove('text-main-text');
     e.target.classList.remove('border-main-text');

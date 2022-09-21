@@ -33,16 +33,9 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
   }, [usernameRef]);
 
   const createInstructor = async () => {
-    const username =
-      usernameRef && usernameRef.current ? usernameRef.current.value : null;
-    const profilePicUrl =
-      profilePicUrlRef && profilePicUrlRef.current
-        ? profilePicUrlRef.current.value
-        : null;
-    const backgroundPicUrl =
-      backgroundPicUrlRef && backgroundPicUrlRef.current
-        ? backgroundPicUrlRef.current.value
-        : null;
+    const username = usernameRef!.current!.value;
+    const profilePicUrl = profilePicUrlRef!.current!.value;
+    const backgroundPicUrl = backgroundPicUrlRef!.current!.value;
 
     setShowModal(false);
 
