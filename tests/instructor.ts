@@ -11,12 +11,6 @@ describe("instructor", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
-  });
-
   describe("creation", () => {
     const instructor = anchor.web3.Keypair.generate();
 
@@ -109,22 +103,6 @@ describe("instructor", () => {
               systemProgram: anchor.web3.SystemProgram.programId,
             })
             .rpc();
-
-          // Fetch Instructor and check that it no longer exists
-          try {
-            const deletedInstructor = await program.account.instructor.fetch(
-              instructor.publicKey
-            );
-            console.log(deletedInstructor);
-          } catch (error) {
-            const errorMsg = "Error: Account does not exist";
-
-            // Check that output is the same as above message
-            assert.equal(
-              error.toString().substring(0, error.toString().lastIndexOf(" ")),
-              errorMsg
-            );
-          }
         }
       });
 

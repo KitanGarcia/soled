@@ -11,12 +11,6 @@ describe("course", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
-  });
-
   describe("creation", () => {
     const course = anchor.web3.Keypair.generate();
 
@@ -81,5 +75,31 @@ describe("course", () => {
         "https://pngimg.com/uploads/cat/small/cat_PNG50550.png"
       );
     });
+
+    /*
+    it("deletes test course accounts", async () => {
+      const courses = await program.account.course.all();
+      // console.log("==============================================");
+      // console.log(courses);
+
+      courses.forEach(async (lesson) => {
+        if (lesson.account.title === "1st course title") {
+          await program.methods
+            .deleteCourse()
+            .accounts({
+              course: lesson.publicKey,
+              authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+              systemProgram: anchor.web3.SystemProgram.programId,
+            })
+            .rpc();
+        }
+      });
+
+      const coursesRemaining = await program.account.course.all();
+      coursesRemaining.forEach(async (lesson) => {
+        assert.notEqual(lesson.account.title, "1st course title");
+      });
+    });
+    */
   });
 });
