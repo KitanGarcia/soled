@@ -2,6 +2,7 @@ import * as assert from "assert";
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
+import { connection } from "../app/utils/Connection";
 
 describe("instructor", () => {
   // Configure the client to use the local cluster.
@@ -16,6 +17,34 @@ describe("instructor", () => {
 
     afterEach("deletes the instructor created", async () => {
       // Delete Instructor
+
+      const latestBlockhash = await connection.getLatestBlockhash("processed");
+      const deleteTxn = new anchor.web3.Transaction({
+        feePayer: instructor.publicKey,
+        ...latestBlockhash,
+      });
+
+      const inst = await program.methods
+        .deleteInstructor()
+        .accounts({
+          instructor: instructor.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .signers([instructor])
+        .instruction();
+
+      deleteTxn.add(inst);
+
+      // Sign transaction, broadcast, and confirm
+      const signature = await anchor.web3.sendAndConfirmTransaction(
+        connection,
+        deleteTxn,
+        [instructor]
+      );
+      console.log("SIGNATURE", signature);
+
+      /*
       await program.methods
         .deleteInstructor()
         .accounts({
@@ -24,6 +53,7 @@ describe("instructor", () => {
           systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
+        */
 
       // Fetch Instructor and check that it no longer exists
       try {
