@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
-import { ConfirmOptions } from '@solana/web3.js';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { AnchorProvider } from '@project-serum/anchor';
 import * as anchor from '@project-serum/anchor';
@@ -7,15 +6,7 @@ import * as anchor from '@project-serum/anchor';
 import CourseCard from './CourseCard';
 import IDL from '../../../target/idl/soled.json';
 import { Course } from '../../types/Course';
-import { connection } from '../../utils/Connection';
-
-const PROGRAM_ID = new anchor.web3.PublicKey(
-  '927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe'
-);
-
-const OPTS = {
-  preflightCommitment: 'processed',
-} as ConfirmOptions;
+import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
 export default function CourseGrid() {
   const wallet = useAnchorWallet();
