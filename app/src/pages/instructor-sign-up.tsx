@@ -6,7 +6,7 @@ import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
 import InstructorSignUpForm from '../components/InstructorSignUpForm';
 
-const MyCourses: NextPage = () => {
+const InstructorSignUp: NextPage = () => {
   const [showModal, setShowModal] = useState(false);
 
   const handleClick = () => {
@@ -33,4 +33,4 @@ const MyCourses: NextPage = () => {
   );
 };
 
-export default MyCourses;
+export default InstructorSignUp;

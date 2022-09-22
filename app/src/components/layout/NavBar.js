@@ -1,9 +1,8 @@
-import { Fragment } from 'react';
 import {
   WalletDisconnectButton,
   WalletMultiButton,
 } from '@solana/wallet-adapter-react-ui';
-import { Disclosure, Menu, Transition } from '@headlessui/react';
+import { Disclosure } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -11,7 +10,7 @@ require('@solana/wallet-adapter-react-ui/styles.css');
 const navigation = [
   { name: 'Home', href: '/', current: true },
   { name: 'Dashboard', href: 'dashboard', current: false },
-  { name: 'My Courses', href: 'mycourses', current: false },
+  { name: 'My Courses', href: 'my-courses', current: false },
   { name: 'Become an Instructor', href: 'instructor-sign-up', current: false },
 ];
 
