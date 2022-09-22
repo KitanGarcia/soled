@@ -10,6 +10,7 @@ module.exports = {
       'card-border-color-end': '#2F3031',
       'bg-color': '#1D1D1D',
       'fg-color': '#262828',
+      'footer-color': '#212322',
       'like-btn': '#303132',
       'main-text': '#FEFEFE',
       'secondary-text': '#747474',
@@ -18,6 +19,5 @@ module.exports = {
     },
     extend: {},
   },
-  plugins: [require("daisyui", "@tailwindcss/forms")],
-
-}
+  plugins: [require('daisyui', '@tailwindcss/forms')],
+};

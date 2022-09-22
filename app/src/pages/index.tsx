@@ -12,6 +12,7 @@ import Footer from '../components/layout/Footer';
 import InstructorCard from '../components/InstructorCard';
 import { Course } from '../../types/Course';
 import { Instructor } from '../../types/Instructor';
+import CourseGrid from '../components/CourseGrid';
 
 const Home: NextPage = () => {
   const wallet = useAnchorWallet();
@@ -67,12 +68,19 @@ const Home: NextPage = () => {
   }, [wallet, program, getCourses, getInstructors]);
 
   return (
-    <div className={styles.container}>
+    <div className="bg-bg-color text-main-text">
       <NavBar></NavBar>
       <main className={styles.main}>
-        <div className="ml-10 mb-16 w-2/6">
+        <h1 className="font-bold leading-9 text-2xl mb-2 text-main-text">
+          COURSES{' '}
+        </h1>
+        <CourseGrid />
+        <div className="mt-24 ml-10 mb-16 w-2/6">
           <h1 className="font-bold leading-9 text-2xl mb-2 text-main-text">
-            TOP INSTRUCTORS THIS MONTH
+            TOP INSTRUCTORS THIS{' '}
+            <strong className="text-transparent bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
+              MONTH
+            </strong>
           </h1>
           <p>
             Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
@@ -94,6 +102,9 @@ const Home: NextPage = () => {
             />
           ))}
         </div>
+        <button className="mt-16 inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
+          Explore All
+        </button>
       </main>
       <Footer />
     </div>
