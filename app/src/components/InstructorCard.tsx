@@ -12,7 +12,7 @@ export default function InstructorCard({
 }: InstructorCardProps) {
   const placeholder = 'https://via.placeholder.com/70x70';
   return (
-    <div className="w-[400px] mx-6 bg-fg-color border-2 cursor-pointer border-card-border-color-start rounded-3xl">
+    <div className="w-[440px] mx-6 bg-fg-color border-2 cursor-pointer border-card-border-color-start rounded-3xl">
       <div className="flex items-center">
         <div className="center p-6 flex items-center">
           <h1 className="leading-10 text-xl font-medium text-main-text opacity-75">

@@ -12,6 +12,7 @@ import Footer from '../components/layout/Footer';
 import InstructorCard from '../components/InstructorCard';
 import { Instructor } from '../../types/Instructor';
 import CourseGrid from '../components/CourseGrid';
+import ArticleCard from '../components/ArticleCard';
 
 const Home: NextPage = () => {
   const wallet = useAnchorWallet();
@@ -39,11 +40,19 @@ const Home: NextPage = () => {
 
         console.log(allInstructors);
         setInstructors(allInstructors as Instructor[]);
-        setShowExploreAll(allInstructors.length - 1 > 12 ? true : false);
 
+        // Only give link to view all instructors if there are more than 12
+        // Ie. if not instructors get rendered on this page
+        setShowExploreAll(allInstructors.length > 12 ? true : false);
+
+        // Organize instructors in grid with rows of 3 cards or less
+        // Only render a max of 12 cards
         let grid = [];
         let row = [];
-        for (let i = 0; i < allInstructors.length; i++) {
+        const maxCards =
+          allInstructors.length >= 12 ? 12 : allInstructors.length;
+
+        for (let i = 0; i < maxCards; i++) {
           row.push(allInstructors[i]);
           if ((i + 1) % 3 === 0 || i === allInstructors.length - 1) {
             grid.push(row);
@@ -69,13 +78,24 @@ const Home: NextPage = () => {
       <main className={styles.main}>
         <div className="w-full">
           <h1 className="ml-10 font-bold leading-9 text-2xl mb-2 text-main-text">
-            COURSES{' '}
+            FEATURED COURSES{' '}
           </h1>
           <CourseGrid />
         </div>
 
+        <div className="w-full mt-12">
+          <h1 className="ml-10 font-bold leading-9 text-2xl mb-2 text-main-text">
+            ARTICLES{' '}
+          </h1>
+          <div className="flex flex-col items-center justify-center">
+            <ArticleCard />
+            <ArticleCard />
+            <ArticleCard />
+          </div>
+        </div>
+
         <div className="w-full">
-          <div className="mt-24 ml-6 mb-16 w-2/6">
+          <div className="mt-24 ml-10 mb-16 w-2/6">
             <h1 className="font-bold leading-9 text-2xl mb-2 text-main-text">
               TOP INSTRUCTORS THIS{' '}
               <strong className="text-transparent bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
@@ -110,7 +130,7 @@ const Home: NextPage = () => {
           </div>
         </div>
         {showExploreAll && (
-          <button className="mt-4 inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
+          <button className="inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
             Explore All
           </button>
         )}
