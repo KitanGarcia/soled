@@ -17,34 +17,6 @@ describe("instructor", () => {
 
     afterEach("deletes the instructor created", async () => {
       // Delete Instructor
-
-      const latestBlockhash = await connection.getLatestBlockhash("processed");
-      const deleteTxn = new anchor.web3.Transaction({
-        feePayer: instructor.publicKey,
-        ...latestBlockhash,
-      });
-
-      const inst = await program.methods
-        .deleteInstructor()
-        .accounts({
-          instructor: instructor.publicKey,
-          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
-          systemProgram: anchor.web3.SystemProgram.programId,
-        })
-        .signers([instructor])
-        .instruction();
-
-      deleteTxn.add(inst);
-
-      // Sign transaction, broadcast, and confirm
-      const signature = await anchor.web3.sendAndConfirmTransaction(
-        connection,
-        deleteTxn,
-        [instructor]
-      );
-      console.log("SIGNATURE", signature);
-
-      /*
       await program.methods
         .deleteInstructor()
         .accounts({
@@ -53,7 +25,66 @@ describe("instructor", () => {
           systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
-        */
+
+      /*
+      // BELOW IS HOW TO CREATE AN IXN, ADD TO TXN, SIGN IN DIFFERENT WAYS, AND SEND
+      const latestBlockhash = await connection.getLatestBlockhash("processed");
+      const deleteTxn = new anchor.web3.Transaction({
+        feePayer: instructor.publicKey,
+        ...latestBlockhash,
+      });
+
+      const instruction = await program.methods
+        .deleteInstructor()
+        .accounts({
+          instructor: instructor.publicKey,
+          authority: provider.wallet.publicKey,
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .instruction();
+
+      deleteTxn.add(instruction);
+
+
+      //deleteTxn.sign((provider.wallet as anchor.Wallet).payer);
+      const test1 = await provider.wallet.signTransaction(deleteTxn);
+      console.log("TEST1", test1);
+
+      console.log("==========================");
+      console.log((provider.wallet as anchor.Wallet).payer);
+      console.log("==========================");
+
+      const test = await provider.connection.sendRawTransaction(
+        deleteTxn.serialize(),
+        {
+          skipPreflight: true,
+          preflightCommitment: "confirmed",
+        }
+      );
+      console.log(test);
+
+      // Sign transaction, broadcast, and confirm
+      const signature = await anchor.web3.sendAndConfirmTransaction(
+        connection,
+        deleteTxn,
+        [(provider.wallet as anchor.Wallet).payer]
+      );
+      console.log("SIGNATURE", signature);
+      */
+
+      /*
+      // ANOTHER ALTERNATIVE
+      const tx = new Transaction();
+      tx.add(myInstruction);
+      provider.wallet.signTransaction(tx);
+      await provider.connection.sendRawTransaction(
+          tx.serialize(),
+          {
+              skipPreflight: true,
+              preflightCommitment: "confirmed",
+          },
+      )
+      */
 
       // Fetch Instructor and check that it no longer exists
       try {
