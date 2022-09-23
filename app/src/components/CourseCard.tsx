@@ -14,7 +14,9 @@ export default function CourseCard({
         <img className="rounded-xl h-[275px] w-[350px]" src={thumbnailUrl} />
       </div>
       <div>
-        <div className="card-title pl-6">{title}</div>
+        <div className="card-title pl-6">
+          <p className="cursor-pointer">{title}</p>
+        </div>
       </div>
       <div className="max-h-16 overflow-hidden pt-5 pl-6">
         <div className="text-secondary-text">Rating:</div>

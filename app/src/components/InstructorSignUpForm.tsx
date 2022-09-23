@@ -126,7 +126,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
               Sign Up
             </h3>
             <h3
-              className="mx-4 border-2 w-[30px] h-[30px] rounded-full text-center hover:cursor-pointer hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:border-main-text hover:text-main-text"
+              className="mx-4 border-2 w-[30px] h-[30px] rounded-full text-center hover:cursor-pointer hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:border-main-text hover:text-main-text"
               onClick={() => setShowModal(false)}
             >
               X
@@ -179,7 +179,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
         <button
           onClick={() => createInstructor()}
           type="button"
-          className="inline-flex w-full justify-center rounded-md border border-card-border-color-start bg-like-btn px-4 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-none hover:text-main-text sm:ml-3 sm:w-auto sm:text-sm"
+          className="inline-flex w-full justify-center rounded-md border border-card-border-color-start bg-like-btn px-4 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text sm:ml-3 sm:w-auto sm:text-sm"
         >
           Register
         </button>
