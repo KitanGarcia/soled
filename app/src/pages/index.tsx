@@ -77,14 +77,14 @@ const Home: NextPage = () => {
       <NavBar></NavBar>
       <main className={styles.main}>
         <div className="w-full">
-          <h1 className="ml-10 font-bold leading-9 text-2xl mb-2 text-main-text">
+          <h1 className="ml-10 font-bold leading-7 text-2xl mb-2 text-main-text">
             FEATURED COURSES{' '}
           </h1>
           <CourseGrid />
         </div>
 
         <div className="w-full mt-12">
-          <h1 className="ml-10 font-bold leading-9 text-2xl mb-2 text-main-text">
+          <h1 className="ml-10 font-bold leading-7 text-2xl mb-2 text-main-text">
             ARTICLES{' '}
           </h1>
           <div className="flex flex-col items-center justify-center">
@@ -96,7 +96,7 @@ const Home: NextPage = () => {
 
         <div className="w-full">
           <div className="mt-24 ml-10 mb-16 w-2/6">
-            <h1 className="font-bold leading-9 text-2xl mb-2 text-main-text">
+            <h1 className="font-bold leading-7 text-2xl mb-2 text-main-text">
               TOP INSTRUCTORS THIS{' '}
               <strong className="text-transparent bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
                 MONTH
