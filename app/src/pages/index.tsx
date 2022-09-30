@@ -6,17 +6,17 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 import IDL from '../../../target/idl/soled.json';
-
 import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
 import InstructorCard from '../components/InstructorCard';
 import { Instructor } from '../../types/Instructor';
 import CourseGrid from '../components/CourseGrid';
 import ArticleCard from '../components/ArticleCard';
+import { useInstructors } from '../hooks/useInstructors';
 
 const Home: NextPage = () => {
   const wallet = useAnchorWallet();
-  const [instructors, setInstructors] = useState<Array<Instructor>>([]);
+  const allInstructors = useInstructors();
   const [instructorGrid, setInstructorGrid] = useState<
     Array<Array<Instructor>>
   >([[]]);
@@ -32,15 +32,6 @@ const Home: NextPage = () => {
   const getInstructors = useCallback(async () => {
     if (wallet && program) {
       try {
-        const allInstructors = await program.account.instructor
-          .all()
-          .then((instructors) =>
-            instructors.map((instructor) => instructor.account)
-          );
-
-        console.log(allInstructors);
-        setInstructors(allInstructors as Instructor[]);
-
         // Only give link to view all instructors if there are more than 12
         // Ie. if not instructors get rendered on this page
         setShowExploreAll(allInstructors.length > 12 ? true : false);
@@ -64,7 +55,7 @@ const Home: NextPage = () => {
         console.error(error);
       }
     }
-  }, [wallet, program]);
+  }, [wallet, program, allInstructors]);
 
   useEffect(() => {
     if (wallet && program) {
