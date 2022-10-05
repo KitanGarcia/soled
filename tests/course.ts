@@ -11,25 +11,19 @@ describe("course", () => {
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
-  });
-
   describe("creation", () => {
     const course = anchor.web3.Keypair.generate();
 
     afterEach(async () => {
       // Delete Course
-      await program.rpc.deleteCourse({
-        accounts: {
+      await program.methods
+        .deleteCourse()
+        .accounts({
           course: course.publicKey,
           authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
           systemProgram: anchor.web3.SystemProgram.programId,
-        },
-        signers: [],
-      });
+        })
+        .rpc();
 
       // Fetch Creator and check that it no longer exists
       try {
@@ -51,22 +45,22 @@ describe("course", () => {
     it("can create a Course account", async () => {
       const signers = [course];
 
-      await program.rpc.createCourse(
-        "1st course title",
-        "Promising",
-        1,
-        32,
-        "https://pngimg.com/uploads/cat/small/cat_PNG50550.png",
-        {
-          accounts: {
-            course: course.publicKey,
-            //authority: program.provider.wallet.publicKey,
-            authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
-            systemProgram: anchor.web3.SystemProgram.programId,
-          },
-          signers: signers,
-        }
-      );
+      await program.methods
+        .createCourse(
+          "1st course title",
+          "Promising",
+          1,
+          32,
+          "https://pngimg.com/uploads/cat/small/cat_PNG50550.png"
+        )
+        .accounts({
+          course: course.publicKey,
+          //authority: program.provider.wallet.publicKey,
+          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .signers(signers)
+        .rpc();
 
       const courseAccount = await program.account.course.fetch(
         course.publicKey
@@ -76,7 +70,36 @@ describe("course", () => {
       assert.equal(courseAccount.rating, "Promising");
       assert.equal(courseAccount.price, 1);
       assert.equal(courseAccount.lessons, 32);
-      assert.equal(courseAccount.thumbnailUrl, "https://pngimg.com/uploads/cat/small/cat_PNG50550.png");
+      assert.equal(
+        courseAccount.thumbnailUrl,
+        "https://pngimg.com/uploads/cat/small/cat_PNG50550.png"
+      );
     });
+
+    /*
+    it("deletes test course accounts", async () => {
+      const courses = await program.account.course.all();
+      // console.log("==============================================");
+      // console.log(courses);
+
+      courses.forEach(async (lesson) => {
+        if (lesson.account.title === "1st course title") {
+          await program.methods
+            .deleteCourse()
+            .accounts({
+              course: lesson.publicKey,
+              authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+              systemProgram: anchor.web3.SystemProgram.programId,
+            })
+            .rpc();
+        }
+      });
+
+      const coursesRemaining = await program.account.course.all();
+      coursesRemaining.forEach(async (lesson) => {
+        assert.notEqual(lesson.account.title, "1st course title");
+      });
+    });
+    */
   });
 });
