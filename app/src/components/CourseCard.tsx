@@ -1,4 +1,5 @@
 import { WrenchIcon, HeartIcon } from '@heroicons/react/24/solid';
+import { useState } from 'react';
 import { CourseCardProps } from '../../types/CourseCardProps';
 
 export default function CourseCard({
@@ -8,8 +9,27 @@ export default function CourseCard({
   price,
   numLessons,
 }: CourseCardProps) {
+  const [liked, setLiked] = useState(false);
+  const likeCard = (event: React.MouseEvent) => {
+    // Communicate to backend to actually like a card and store that
+
+    // Style to show that card has been liked
+    if (!liked) {
+      event.currentTarget.classList.add('bg-gradient-to-br');
+      event.currentTarget.classList.add('from-solana-start');
+      event.currentTarget.classList.add('to-solana-end');
+      setLiked(true);
+      return;
+    }
+
+    event.currentTarget.classList.remove('bg-gradient-to-br');
+    event.currentTarget.classList.remove('from-solana-start');
+    event.currentTarget.classList.remove('to-solana-end');
+    setLiked(false);
+  };
+
   return (
-    <div className="w-[400px] border-2 border-card-border-color-start bg-fg-color rounded-xl overflow-hidden">
+    <div className="w-[400px] transition hover:delay-200 hover:shadow-md hover:border-highlight-color border-2 border-card-border-color-start bg-fg-color rounded-xl overflow-hidden">
       <div className="center p-6">
         <img className="rounded-xl h-[275px] w-[350px]" src={thumbnailUrl} />
       </div>
@@ -44,7 +64,10 @@ export default function CourseCard({
         </div>
 
         <div className="relative right-[-15px] bottom-[-15px] ">
-          <button className="btn h-[90px] w-[90px] rounded-full bg-like-btn hover:bg-gradient-to-br from-solana-start to-solana-end">
+          <button
+            className="btn h-[90px] w-[90px] rounded-full bg-like-btn hover:bg-gradient-to-br from-solana-start to-solana-end"
+            onClick={(event) => likeCard(event)}
+          >
             <HeartIcon className="ml-1 h-6 w-6 text-main-text offset-position" />
           </button>
         </div>
