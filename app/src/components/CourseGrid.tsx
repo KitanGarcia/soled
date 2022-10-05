@@ -75,20 +75,27 @@ export default function CourseGrid() {
   }, [wallet, program, getCourses]);
 
   return (
-    <div className="place-content-center flex flex-wrap p-5 gap-4">
-      {wallet &&
-        courses &&
-        courses.map((course: any, index: number) => (
-          <div key={`${course.title}_${index}`}>
-            <CourseCard
-              title={course.title}
-              rating={course.rating}
-              price={course.price}
-              numLessons={course.lessons}
-              thumbnailUrl={course.thumbnailUrl}
-            />
+    <>
+      {wallet && courses && (
+        <div>
+          <h1 className="ml-10 font-bold leading-7 text-2xl mb-2 text-main-text">
+            FEATURED COURSES{' '}
+          </h1>
+          <div className="place-content-center flex flex-wrap p-5 gap-4">
+            {courses.map((course: any, index: number) => (
+              <div key={`${course.title}_${index}`}>
+                <CourseCard
+                  title={course.title}
+                  rating={course.rating}
+                  price={course.price}
+                  numLessons={course.lessons}
+                  thumbnailUrl={course.thumbnailUrl}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-    </div>
+        </div>
+      )}
+    </>
   );
 }

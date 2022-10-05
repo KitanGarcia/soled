@@ -77,62 +77,65 @@ const Home: NextPage = () => {
       <NavBar></NavBar>
       <main className={styles.main}>
         <div className="w-full">
-          <h1 className="ml-10 font-bold leading-7 text-2xl mb-2 text-main-text">
-            FEATURED COURSES{' '}
-          </h1>
           <CourseGrid />
         </div>
 
-        <div className="w-full mt-12">
-          <h1 className="ml-10 font-bold leading-7 text-2xl mb-2 text-main-text">
-            ARTICLES{' '}
-          </h1>
-          <div className="flex flex-col items-center justify-center">
-            <ArticleCard />
-            <ArticleCard />
-            <ArticleCard />
-          </div>
-        </div>
-
-        <div className="w-full">
-          <div className="mt-24 ml-10 mb-16 w-2/6">
-            <h1 className="font-bold leading-7 text-2xl mb-2 text-main-text">
-              TOP INSTRUCTORS THIS{' '}
-              <strong className="text-transparent bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
-                MONTH
-              </strong>
+        {wallet && (
+          <div className="w-full mt-12">
+            <h1 className="ml-10 font-bold leading-7 text-2xl mb-2 text-main-text">
+              ARTICLES{' '}
             </h1>
-            <p>
-              Amet minim mollit non deserunt ullamco est sit aliqua dolor do
-              amet sint. Velit officia consequat duis enim minim mollit.
-            </p>
+            <div className="flex flex-col items-center justify-center">
+              <ArticleCard />
+              <ArticleCard />
+              <ArticleCard />
+            </div>
           </div>
-          <div className="flex flex-col justify-evenly">
-            {instructorGrid.map((cols, rowIndex) => (
-              <div className="flex justify-center mb-12" key={rowIndex}>
-                {cols.map((instructor, colIndex) => (
-                  <InstructorCard
-                    username={instructor.username}
-                    profilePicUrl={instructor.profilePicUrl}
-                    backgroundPicUrl={instructor.backgroundPicUrl}
-                    numFollowers={instructor.numFollowers}
-                    numFollowing={instructor.numFollowing}
-                    numCourses={instructor.numCourses}
-                    rating={instructor.rating}
-                    listNumber={rowIndex * 3 + colIndex + 1}
-                    key={`${instructor.username}_${
-                      rowIndex * 3 + colIndex + 1
-                    }`}
-                  />
+        )}
+
+        {wallet && instructorGrid && (
+          <>
+            <div className="w-full">
+              <div className="mt-24 ml-10 mb-16 w-2/6">
+                <h1 className="font-bold leading-7 text-2xl mb-2 text-main-text">
+                  TOP INSTRUCTORS THIS{' '}
+                  <strong className="text-transparent bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
+                    MONTH
+                  </strong>
+                </h1>
+                <p>
+                  Amet minim mollit non deserunt ullamco est sit aliqua dolor do
+                  amet sint. Velit officia consequat duis enim minim mollit.
+                </p>
+              </div>
+              <div className="flex flex-col justify-evenly">
+                {instructorGrid.map((cols, rowIndex) => (
+                  <div className="flex justify-center mb-12" key={rowIndex}>
+                    {cols.map((instructor, colIndex) => (
+                      <InstructorCard
+                        username={instructor.username}
+                        profilePicUrl={instructor.profilePicUrl}
+                        backgroundPicUrl={instructor.backgroundPicUrl}
+                        numFollowers={instructor.numFollowers}
+                        numFollowing={instructor.numFollowing}
+                        numCourses={instructor.numCourses}
+                        rating={instructor.rating}
+                        listNumber={rowIndex * 3 + colIndex + 1}
+                        key={`${instructor.username}_${
+                          rowIndex * 3 + colIndex + 1
+                        }`}
+                      />
+                    ))}
+                  </div>
                 ))}
               </div>
-            ))}
-          </div>
-        </div>
-        {showExploreAll && (
-          <button className="inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
-            Explore All
-          </button>
+            </div>
+            {showExploreAll && (
+              <button className="inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
+                Explore All
+              </button>
+            )}
+          </>
         )}
       </main>
       <Footer />
