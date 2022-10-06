@@ -8,6 +8,7 @@ import {
 } from 'react';
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import IDL from '../../../target/idl/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
 
@@ -16,6 +17,7 @@ interface formProps {
 }
 
 export default function CreateCourseForm({ setShowModal }: formProps) {
+  const { sendTransaction } = useWallet();
   const titleRef = useRef<HTMLInputElement>(null);
   const descriptionRef = useRef<HTMLInputElement>(null);
   const thumbnailUrlRef = useRef<HTMLInputElement>(null);
@@ -64,28 +66,50 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
 
       // Create Course account
       try {
-        await program.rpc.createCourse(
-          'title',
-          'description',
-          'https://via.placeholder.com/600x400',
-          {
-            accounts: {
-              course: course.publicKey,
-              authority: connectedWallet.publicKey,
-              systemProgram: anchor.web3.SystemProgram.programId,
-            },
-            signers: [course],
-          }
+        const latestBlockhash = await connection.getLatestBlockhash(
+          'finalized'
         );
 
-        try {
-          const courseAccount = await program.account.course.fetch(
-            course.publicKey
-          );
-        } catch {
-          console.error('Course unable to be created.');
-        }
+        // Create transaction
+        const txn = new anchor.web3.Transaction({
+          feePayer: connectedWallet.publicKey,
+          ...latestBlockhash,
+        });
+
+        // Create instruction
+        const ixn = await program.methods
+          .createCourse(
+            title,
+            description, // rating
+            1, // price
+            32, // lessons
+            thumbnailUrl
+          )
+          .accounts({
+            course: course.publicKey,
+            authority: connectedWallet.publicKey,
+            systemProgram: anchor.web3.SystemProgram.programId,
+          })
+          .instruction();
+
+        txn.add(ixn);
+
+        // Course signs with partialSign; user signs with sendTransaction
+        txn.partialSign(course);
+        const signature = await sendTransaction(txn, connection);
+
+        await connection.confirmTransaction({
+          blockhash: latestBlockhash.blockhash,
+          lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+          signature,
+        });
+
+        const courseAccount = await program.account.course.fetch(
+          course.publicKey
+        );
+        console.log(courseAccount);
       } catch (error) {
+        console.error('Course unable to be created.');
         console.error(error);
       }
     }
