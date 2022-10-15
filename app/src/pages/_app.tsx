@@ -14,6 +14,7 @@ import { clusterApiUrl } from '@solana/web3.js';
 import type { AppProps } from 'next/app';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
+import { CoursesProvider } from '../contexts/courseContext';
 import { InstructorsProvider } from '../contexts/instructorContext';
 
 // Use require instead of import since order matters
@@ -42,7 +43,9 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
           <InstructorsProvider>
-            <Component {...pageProps} />
+            <CoursesProvider>
+              <Component {...pageProps} />
+            </CoursesProvider>
           </InstructorsProvider>
         </WalletModalProvider>
       </WalletProvider>
