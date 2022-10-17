@@ -13,7 +13,10 @@ module.exports = {
       'highlight-color': '#6ED4E8',
       'footer-color': '#212322',
       'like-btn': '#303132',
-      'main-text': '#FEFEFE',
+      'hover-bg': '#1F2120',
+      'hover-border': '#ADBDF9',
+      'main-text': '#FFFFFF',
+      'active-text': '#A9BAF8',
       'secondary-text': '#747474',
       'solana-start': '#9845FE',
       'solana-end': '#19FA9A',
@@ -21,6 +24,9 @@ module.exports = {
     extend: {
       boxShadow: {
         md: '0 0 15px 0 rgb(110 212 232 / .5)',
+      },
+      letterSpacing: {
+        widest: '0.155em',
       },
     },
   },
