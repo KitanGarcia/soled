@@ -1,12 +1,16 @@
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { HeartIcon } from '@heroicons/react/24/solid';
 import React from 'react';
 
-import styles from '../styles/Home.module.css';
-import NavBar from '../components/layout/NavBar';
-import Footer from '../components/layout/Footer';
+import styles from '../../styles/Home.module.css';
+import NavBar from '../../components/layout/NavBar';
+import Footer from '../../components/layout/Footer';
 
 const MyCourses: NextPage = () => {
+  const router = useRouter();
+  const pubKey = router.query;
+
   return (
     <div className="bg-bg-color">
       <NavBar></NavBar>

@@ -53,6 +53,7 @@ export default function CourseGrid() {
             {courses.map((course: any, index: number) => (
               <div key={`${course.title}_${index}`}>
                 <CourseCard
+                  authority={course.authority}
                   title={course.title}
                   rating={course.rating}
                   price={course.price}
