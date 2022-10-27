@@ -16,7 +16,9 @@ const MyCourses: NextPage = () => {
   return (
     <div className="bg-bg-color">
       <NavBar></NavBar>
-      <main className={styles.main}>
+      <main
+        className={`${styles.main} flex flex-col justify-center items-center`}
+      >
         <h1 className={styles.title}>All of my courses</h1>
         Option to view and add courses here
         <button
@@ -25,8 +27,8 @@ const MyCourses: NextPage = () => {
         >
           Add Course
         </button>
+        {showModal && <CreateCourseForm setShowModal={setShowModal} />}
       </main>
-      {showModal && <CreateCourseForm setShowModal={setShowModal} />}
 
       <Footer />
     </div>

@@ -122,9 +122,11 @@ const Home: NextPage = () => {
               </div>
             </div>
             {showExploreAll && (
-              <button className="inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
-                Explore All
-              </button>
+              <div className="flex justify-center align-center">
+                <button className="inline-flex w-1/8 justify-center rounded-md border border-card-border-color-start bg-like-btn px-12 py-2 font-medium shadow-sm hover:bg-gradient-to-br hover:from-solana-start hover:to-solana-end hover:border-transparent hover:text-main-text">
+                  Explore All
+                </button>
+              </div>
             )}
           </>
         )}

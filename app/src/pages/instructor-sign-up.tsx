@@ -16,7 +16,9 @@ const InstructorSignUp: NextPage = () => {
   return (
     <div className="bg-bg-color">
       <NavBar></NavBar>
-      <main className={styles.main}>
+      <main
+        className={`${styles.main} flex flex-col justify-center items-center`}
+      >
         <h1 className={styles.title}>Become an Instructor</h1>
         Sign up to create courses
         <button
@@ -25,8 +27,8 @@ const InstructorSignUp: NextPage = () => {
         >
           Register
         </button>
+        {showModal && <InstructorSignUpForm setShowModal={setShowModal} />}
       </main>
-      {showModal && <InstructorSignUpForm setShowModal={setShowModal} />}
 
       <Footer />
     </div>
