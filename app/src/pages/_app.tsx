@@ -14,6 +14,8 @@ import { clusterApiUrl } from '@solana/web3.js';
 import type { AppProps } from 'next/app';
 import type { FC } from 'react';
 import React, { useMemo } from 'react';
+import { CoursesProvider } from '../contexts/courseContext';
+import { InstructorsProvider } from '../contexts/instructorContext';
 
 // Use require instead of import since order matters
 require('@solana/wallet-adapter-react-ui/styles.css');
@@ -40,9 +42,11 @@ const App: FC<AppProps> = ({ Component, pageProps }) => {
     <ConnectionProvider endpoint={endpoint}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>
-       
-          <Component {...pageProps} />
-        
+          <InstructorsProvider>
+            <CoursesProvider>
+              <Component {...pageProps} />
+            </CoursesProvider>
+          </InstructorsProvider>
         </WalletModalProvider>
       </WalletProvider>
     </ConnectionProvider>

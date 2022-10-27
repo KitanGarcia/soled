@@ -1,38 +1,12 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useMemo } from 'react';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
-import { AnchorProvider } from '@project-serum/anchor';
-import * as anchor from '@project-serum/anchor';
-
 import CourseCard from './CourseCard';
-import IDL from '../../../target/idl/soled.json';
-import { Course } from '../../types/Course';
-import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
+import { useCourses } from '../hooks/useCourses';
 
 export default function CourseGrid() {
   const wallet = useAnchorWallet();
 
-  const [courses, setCourses] = useState<Array<Course>>([]);
-
-  const program = useMemo(() => {
-    if (wallet) {
-      const provider = new AnchorProvider(connection, wallet!, OPTS);
-      return new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
-    }
-  }, [wallet]);
-
-  const getCourses = useCallback(async () => {
-    if (wallet && program) {
-      try {
-        const allCourses = await program.account.course
-          .all()
-          .then((courses) => courses.map((course) => course.account));
-
-        setCourses(allCourses as Course[]);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  }, [wallet, program]);
+  const courses = useCourses();
 
   // const addCourse = async () => {
   //   if (wallet && program) {
@@ -67,12 +41,6 @@ export default function CourseGrid() {
   //     }
   //   }
   // }
-
-  useEffect(() => {
-    if (wallet && program) {
-      getCourses();
-    }
-  }, [wallet, program, getCourses]);
 
   return (
     <>
