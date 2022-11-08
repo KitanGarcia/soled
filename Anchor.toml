@@ -2,10 +2,10 @@
 seeds = false
 skip-lint = false
 [programs.localnet]
-soled = "927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe"
+soled = "Hen1HiTHovdX68H4PVBPTGfww6FGL3zgXTeboBZB7EwW"
 
 [programs.devnet]
-soled = "927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe"
+soled = "Hen1HiTHovdX68H4PVBPTGfww6FGL3zgXTeboBZB7EwW"
 
 [registry]
 url = "https://api.apr.dev"

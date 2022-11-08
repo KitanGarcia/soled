@@ -63,7 +63,7 @@ pub struct CreateInstructor<'info> {
 pub struct DeleteInstructor<'info> {
     #[account(
         mut,
-        seeds = [authority.key().as_ref(), b"instructor".as_ref()],
+        seeds = [b"instructor".as_ref(), authority.key().as_ref()], 
         bump = instructor.bump,
         close = authority
     )]

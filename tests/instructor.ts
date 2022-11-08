@@ -3,33 +3,26 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
 import { connection } from "../app/utils/Connection";
-import * as web3 from "@solana/web3.js";
+import * as Web3 from "@solana/web3.js";
 
-describe("instructor", () => {
+describe("instructor", async () => {
   // Configure the client to use the local cluster.
 
   const program = anchor.workspace.Soled as Program<Soled>;
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
-  //anchor.setProvider(anchor.AnchorProvider.env());
 
-  console.log("PROVIDERRRRRRRRRR: ", provider.wallet.publicKey.toString());
-  console.log(
-    "PAYER: ",
-    (provider.wallet as anchor.Wallet).payer.publicKey.toString()
-  );
   const instructorSeeds = [
     Buffer.from("instructor"),
     provider.wallet.publicKey.toBuffer(),
   ];
+  const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
+    instructorSeeds,
+    program.programId
+  );
 
   describe("creation", () => {
     afterEach("deletes the instructor created", async () => {
-      const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
-        instructorSeeds,
-        program.programId
-      );
-
       // Delete Instructor
       await program.methods
         .deleteInstructor()
@@ -39,66 +32,6 @@ describe("instructor", () => {
           systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
-
-      /*
-      // BELOW IS HOW TO CREATE AN IXN, ADD TO TXN, SIGN IN DIFFERENT WAYS, AND SEND
-      const latestBlockhash = await connection.getLatestBlockhash("processed");
-      const deleteTxn = new anchor.web3.Transaction({
-        feePayer: instructor.publicKey,
-        ...latestBlockhash,
-      });
-
-      const instruction = await program.methods
-        .deleteInstructor()
-        .accounts({
-          instructor: instructor.publicKey,
-          authority: provider.wallet.publicKey,
-          systemProgram: anchor.web3.SystemProgram.programId,
-        })
-        .instruction();
-
-      deleteTxn.add(instruction);
-
-
-      //deleteTxn.sign((provider.wallet as anchor.Wallet).payer);
-      const test1 = await provider.wallet.signTransaction(deleteTxn);
-      console.log("TEST1", test1);
-
-      console.log("==========================");
-      console.log((provider.wallet as anchor.Wallet).payer);
-      console.log("==========================");
-
-      const test = await provider.connection.sendRawTransaction(
-        deleteTxn.serialize(),
-        {
-          skipPreflight: true,
-          preflightCommitment: "confirmed",
-        }
-      );
-      console.log(test);
-
-      // Sign transaction, broadcast, and confirm
-      const signature = await anchor.web3.sendAndConfirmTransaction(
-        connection,
-        deleteTxn,
-        [(provider.wallet as anchor.Wallet).payer]
-      );
-      console.log("SIGNATURE", signature);
-      */
-
-      /*
-      // ANOTHER ALTERNATIVE
-      const tx = new Transaction();
-      tx.add(myInstruction);
-      provider.wallet.signTransaction(tx);
-      await provider.connection.sendRawTransaction(
-          tx.serialize(),
-          {
-              skipPreflight: true,
-              preflightCommitment: "confirmed",
-          },
-      )
-      */
 
       // Fetch Instructor and check that it no longer exists
       try {
@@ -123,12 +56,6 @@ describe("instructor", () => {
           instructorSeeds,
           program.programId
         );
-      console.log("INSTRUCTOR PUBKEY: ", instructorPubKey.toString());
-      const accountInfo = await connection.getAccountInfo(instructorPubKey);
-      const isExist = accountInfo !== null;
-      console.log(accountInfo);
-      console.log(isExist);
-      console.log("--------------------");
 
       const latestBlockhash = await connection.getLatestBlockhash("processed");
       const txn = new anchor.web3.Transaction({
@@ -146,16 +73,12 @@ describe("instructor", () => {
         .instruction();
 
       txn.add(ixn);
-
-      console.log(
-        txn
-          .serialize({ requireAllSignatures: false, verifySignatures: false })
-          .toString("base64")
-      );
+      await Web3.sendAndConfirmTransaction(connection, txn, []);
 
       const instructorAccount = await program.account.instructor.fetch(
         instructorPubKey
       );
+
       console.log("INSTRUCTOR ACCOUNT", instructorAccount);
 
       assert.equal(instructorAccount.username, "username");
