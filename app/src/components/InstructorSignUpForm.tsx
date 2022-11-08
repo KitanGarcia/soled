@@ -83,7 +83,7 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
           );
           console.log(instructorAccount);
         } catch {
-          console.error('Course unable to be created.');
+          console.error('Instructor unable to be created.');
         }
       } catch (error) {
         console.error(error);

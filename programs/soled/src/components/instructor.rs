@@ -42,7 +42,7 @@ pub struct CreateInstructor<'info> {
     // Seeded with instructorWalletPubKey + "instructor"
     #[account(
         init, 
-        seeds = [authority.key().as_ref(), "instructor".as_bytes().as_ref()], 
+        seeds = [b"instructor".as_ref(), authority.key().as_ref()], 
         constraint = instructor.to_account_info().owner == program_id,
         bump,
         payer = authority, 
