@@ -2,6 +2,7 @@ import * as assert from "assert";
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
+import * as utils from "./utils/testUtils";
 
 describe("course", async () => {
   // Configure the client to use the local cluster.
@@ -63,6 +64,7 @@ describe("course", async () => {
 
       // Delete Instructor
       console.log("DELETING INSTRUCTOR");
+      // await utils.deleteInstructor((provider.wallet as anchor.Wallet).payer);
       await program.methods
         .deleteInstructor()
         .accounts({

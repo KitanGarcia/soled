@@ -1,9 +1,10 @@
 import * as assert from "assert";
+import * as Web3 from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
+import * as utils from "./utils/testUtils";
 import { connection } from "../app/utils/Connection";
-import * as Web3 from "@solana/web3.js";
 
 describe("instructor", async () => {
   // Configure the client to use the local cluster.
@@ -24,6 +25,7 @@ describe("instructor", async () => {
   describe("creation", () => {
     afterEach("deletes the instructor created", async () => {
       // Delete Instructor
+      // await utils.deleteInstructor((provider.wallet as anchor.Wallet).payer);
       await program.methods
         .deleteInstructor()
         .accounts({
@@ -40,7 +42,6 @@ describe("instructor", async () => {
         );
         console.log(deletedInstructor);
       } catch (error) {
-        console.log(error);
         const errorMsg = "Error: Account does not exist";
 
         // Check that output is the same as above message
@@ -52,6 +53,11 @@ describe("instructor", async () => {
     });
 
     it("creates an instructor account", async () => {
+      /*const instructor = await utils.createInstructor(
+        (provider.wallet as anchor.Wallet).payer
+      );
+      */
+
       const [instructorPubKey, _] =
         await anchor.web3.PublicKey.findProgramAddress(
           instructorSeeds,

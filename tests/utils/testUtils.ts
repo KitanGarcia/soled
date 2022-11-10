@@ -8,42 +8,49 @@ const provider = anchor.AnchorProvider.env();
 anchor.setProvider(provider);
 
 // Given instructor public key, checks if it exists
-const instructorExists = async (publicKey: Web3.PublicKey) => {
+export const instructorExists = async (publicKey: Web3.PublicKey) => {
   const instructor = await program.account.instructor.fetch(publicKey);
   console.log("INSTRUCTOR EXISTS?", instructor ? true : false);
   return instructor ? true : false;
 };
 
 // Given public key (ie. from provider or generated keypair), creates an instructor
-const createInstructor = async (keypair: Web3.Keypair) => {
+export const createInstructor = async (
+  keypair: Web3.Keypair,
+  username: string = "username",
+  profilePicUrl: string = "profile pic url",
+  backgroundPicUrl: string = "background pic url"
+) => {
+  console.log("Creating Instructor...");
   const instructorSeeds = [
     Buffer.from("instructor"),
     keypair.publicKey.toBuffer(),
   ];
-  const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
+  const [instructorPubKey, _] = await anchor.web3.PublicKey.findProgramAddress(
     instructorSeeds,
     program.programId
   );
 
   await program.methods
-    .createInstructor("username", "profile pic url", "background pic url")
+    .createInstructor(username, profilePicUrl, backgroundPicUrl)
     .accounts({
       instructor: instructorPubKey,
-      authority: provider.wallet.publicKey,
+      authority: keypair.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
     })
-    .signers([keypair])
     .rpc();
 
   const instructorAccount = await program.account.instructor.fetch(
     instructorPubKey
   );
+  console.log("INSTRUCTOR ACCOUNT", instructorAccount);
 
   return instructorAccount;
 };
 
 // Given public key (ie. from provider or generated keypair), deletes an instructor
-const deleteInstructor = async (keypair: Web3.Keypair) => {
+export const deleteInstructor = async (keypair: Web3.Keypair) => {
+  console.log(`Deleting Instructor: ${keypair.publicKey.toString()}...`);
   const instructorSeeds = [
     Buffer.from("instructor"),
     keypair.publicKey.toBuffer(),
@@ -57,8 +64,10 @@ const deleteInstructor = async (keypair: Web3.Keypair) => {
     .deleteInstructor()
     .accounts({
       instructor: instructorPubKey,
-      authority: provider.wallet.publicKey,
+      authority: keypair.publicKey,
       systemProgram: anchor.web3.SystemProgram.programId,
     })
     .rpc();
+
+  return instructorPubKey;
 };
