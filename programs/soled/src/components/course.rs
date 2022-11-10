@@ -71,7 +71,7 @@ pub struct CreateCourse<'info> {
 
 #[derive(Accounts)]
 pub struct DeleteCourse<'info> {
-    #[account(mut, close=authority)]
+    #[account(mut, close = authority)]
     pub course: Account<'info, Course>,
 
     #[account(mut, has_one = authority)]

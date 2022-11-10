@@ -40,6 +40,7 @@ describe("instructor", async () => {
         );
         console.log(deletedInstructor);
       } catch (error) {
+        console.log(error);
         const errorMsg = "Error: Account does not exist";
 
         // Check that output is the same as above message
@@ -57,23 +58,14 @@ describe("instructor", async () => {
           program.programId
         );
 
-      const latestBlockhash = await connection.getLatestBlockhash("processed");
-      const txn = new anchor.web3.Transaction({
-        feePayer: instructorPubKey, //instructor.publicKey,
-        ...latestBlockhash,
-      });
-
-      const ixn = await program.methods
+      await program.methods
         .createInstructor("username", "profile pic url", "background pic url")
         .accounts({
           instructor: instructorPubKey,
           authority: provider.wallet.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
-        .instruction();
-
-      txn.add(ixn);
-      await Web3.sendAndConfirmTransaction(connection, txn, []);
+        .rpc();
 
       const instructorAccount = await program.account.instructor.fetch(
         instructorPubKey
