@@ -84,6 +84,41 @@ describe("instructor", async () => {
       assert.equal(instructorAccount.backgroundPicUrl, "background pic url");
     });
 
+    // Change ids and/or createInstructor arguments when mocking data so everyone's doesn't all look the same
+    /*
+    it("can create mock data", async () => {
+      // Get 5 instructor keypairs
+      for (let i = 0; i < 5; i++) {
+        const instructorKeypair = await utils.getKeypair(
+          connection,
+          "I",
+          i.toString()
+        );
+
+        const instructor = await utils.createInstructor(
+          instructorKeypair,
+          `Test User ${i}`,
+          "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png",
+          "https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_960_720.png"
+        );
+      }
+    });
+
+    it("can delete mock data", async () => {
+      // Get 5 instructor keypairs
+      for (let i = 0; i < 5; i++) {
+        const instructorKeypair = await utils.getKeypair(
+          connection,
+          "I",
+          i.toString()
+        );
+
+        const instructor = await utils.deleteInstructor(instructorKeypair);
+        console.log("Deleted instructor", instructor);
+      }
+    });
+    */
+
     /*
     it("deletes test instructor accounts", async () => {
       const instructors = await program.account.instructor.all();
