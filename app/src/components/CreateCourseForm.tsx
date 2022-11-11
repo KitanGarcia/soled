@@ -91,7 +91,7 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
           description,
           1,
           18.2,
-          'thumbnailUrl',
+          thumbnailUrl,
           `${instructor.numCourses}`
         )
         .accounts({
