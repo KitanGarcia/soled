@@ -47,39 +47,29 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
       backgroundPicUrl
     ) {
       // Create account on chain
-      /*
-      const creatorSeeds = [
+      const instructorSeeds = [
+        Buffer.from('instructor'),
         connectedWallet.publicKey.toBuffer(),
-        Buffer.from('creator'),
       ];
-
-      const [creatorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
-        creatorSeeds,
+      const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
+        instructorSeeds,
         program.programId
       );
-      */
-
-      const instructor = anchor.web3.Keypair.generate();
 
       // Create Instructor account
       try {
-        await program.rpc.createInstructor(
-          username,
-          profilePicUrl,
-          backgroundPicUrl,
-          {
-            accounts: {
-              instructor: instructor.publicKey,
-              authority: connectedWallet.publicKey,
-              systemProgram: anchor.web3.SystemProgram.programId,
-            },
-            signers: [instructor],
-          }
-        );
+        await program.methods
+          .createInstructor(username, profilePicUrl, backgroundPicUrl)
+          .accounts({
+            instructor: instructorPubKey,
+            authority: connectedWallet.publicKey,
+            systemProgram: anchor.web3.SystemProgram.programId,
+          })
+          .rpc();
 
         try {
           const instructorAccount = await program.account.instructor.fetch(
-            instructor.publicKey
+            instructorPubKey
           );
           console.log(instructorAccount);
         } catch {
