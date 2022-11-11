@@ -31,6 +31,8 @@ const Home: NextPage = () => {
 
   const getInstructors = useCallback(async () => {
     if (wallet && program) {
+      console.log('All Instructors', allInstructors);
+
       try {
         // Only give link to view all instructors if there are more than 12
         // Ie. if not instructors get rendered on this page

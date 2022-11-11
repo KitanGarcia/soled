@@ -20,6 +20,7 @@ pub fn create_instructor(
     instructor.num_following = 0;
     instructor.num_courses = 0;
     instructor.rating = 0;
+    instructor.bump = *ctx.bumps.get("instructor").unwrap();
 
     Ok(())
 }
@@ -36,17 +37,23 @@ pub fn delete_instructor(_ctx: Context<DeleteInstructor>) -> Result<()> {
 #[derive(Accounts)]
 #[instruction(username: String, profile_pic_url: String, background_pic_url: String)]
 pub struct CreateInstructor<'info> {
-    // Create account of type Instructor and assign creator's pubkey as the payer
+
+    // Create account of type Instructor and assign instructor's pubkey as the payer
+    // Seeded with instructorWalletPubKey + "instructor"
     #[account(
         init, 
+        seeds = [b"instructor".as_ref(), authority.key().as_ref()], 
+        constraint = instructor.to_account_info().owner == program_id,
+        bump,
         payer = authority, 
         space = Instructor::LEN
     )]
-    pub instructor: Account<'info, Instructor >,
+    pub instructor: Account<'info, Instructor>,
 
     // Define user as mutable - money in their account, description
     #[account(mut)]
     pub authority: Signer<'info>,
+
 
     // Ensure System Program is the official one from Solana and handle errors
     pub system_program: Program<'info, System>,
@@ -54,7 +61,12 @@ pub struct CreateInstructor<'info> {
 
 #[derive(Accounts)]
 pub struct DeleteInstructor<'info> {
-    #[account(mut, close=authority)]
+    #[account(
+        mut,
+        seeds = [b"instructor".as_ref(), authority.key().as_ref()], 
+        bump = instructor.bump,
+        close = authority
+    )]
     pub instructor: Account<'info, Instructor>,
 
     #[account(mut)]
@@ -76,6 +88,7 @@ pub struct Instructor {
     pub rating: u8,
     pub profile_pic_url: String,
     pub background_pic_url: String,
+    pub bump: u8,
 }
 
 // Constants for sizing properties
@@ -88,6 +101,7 @@ const STRING_LENGTH_PREFIX: usize = 4;
 const USERNAME_LENGTH: usize = 20 * 4;
 const PROFILE_PIC_URL_LENGTH: usize = 300 * 4;
 const BACKGROUND_PIC_URL_LENGTH: usize = 300 * 4;
+const BUMP_LENGTH: usize = 1;
 
 impl Instructor {
     const LEN: usize = DISCRIMINATOR_LENGTH
@@ -100,5 +114,6 @@ impl Instructor {
         + STRING_LENGTH_PREFIX 
         + PROFILE_PIC_URL_LENGTH 
         + STRING_LENGTH_PREFIX
-        + BACKGROUND_PIC_URL_LENGTH;
+        + BACKGROUND_PIC_URL_LENGTH
+        + BUMP_LENGTH;
 }

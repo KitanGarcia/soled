@@ -1,95 +1,44 @@
 import * as assert from "assert";
+import * as Web3 from "@solana/web3.js";
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
+import * as utils from "./utils/testUtils";
 import { connection } from "../app/utils/Connection";
 
-describe("instructor", () => {
+describe("instructor", async () => {
   // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
 
   const program = anchor.workspace.Soled as Program<Soled>;
   const provider = anchor.AnchorProvider.env();
   anchor.setProvider(provider);
 
-  describe("creation", () => {
-    const instructor = anchor.web3.Keypair.generate();
+  const instructorSeeds = [
+    Buffer.from("instructor"),
+    provider.wallet.publicKey.toBuffer(),
+  ];
+  const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
+    instructorSeeds,
+    program.programId
+  );
 
+  describe("creation", () => {
     afterEach("deletes the instructor created", async () => {
       // Delete Instructor
+      // await utils.deleteInstructor((provider.wallet as anchor.Wallet).payer);
       await program.methods
         .deleteInstructor()
         .accounts({
-          instructor: instructor.publicKey,
-          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          instructor: instructorPubKey,
+          authority: provider.wallet.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
         .rpc();
 
-      /*
-      // BELOW IS HOW TO CREATE AN IXN, ADD TO TXN, SIGN IN DIFFERENT WAYS, AND SEND
-      const latestBlockhash = await connection.getLatestBlockhash("processed");
-      const deleteTxn = new anchor.web3.Transaction({
-        feePayer: instructor.publicKey,
-        ...latestBlockhash,
-      });
-
-      const instruction = await program.methods
-        .deleteInstructor()
-        .accounts({
-          instructor: instructor.publicKey,
-          authority: provider.wallet.publicKey,
-          systemProgram: anchor.web3.SystemProgram.programId,
-        })
-        .instruction();
-
-      deleteTxn.add(instruction);
-
-
-      //deleteTxn.sign((provider.wallet as anchor.Wallet).payer);
-      const test1 = await provider.wallet.signTransaction(deleteTxn);
-      console.log("TEST1", test1);
-
-      console.log("==========================");
-      console.log((provider.wallet as anchor.Wallet).payer);
-      console.log("==========================");
-
-      const test = await provider.connection.sendRawTransaction(
-        deleteTxn.serialize(),
-        {
-          skipPreflight: true,
-          preflightCommitment: "confirmed",
-        }
-      );
-      console.log(test);
-
-      // Sign transaction, broadcast, and confirm
-      const signature = await anchor.web3.sendAndConfirmTransaction(
-        connection,
-        deleteTxn,
-        [(provider.wallet as anchor.Wallet).payer]
-      );
-      console.log("SIGNATURE", signature);
-      */
-
-      /*
-      // ANOTHER ALTERNATIVE
-      const tx = new Transaction();
-      tx.add(myInstruction);
-      provider.wallet.signTransaction(tx);
-      await provider.connection.sendRawTransaction(
-          tx.serialize(),
-          {
-              skipPreflight: true,
-              preflightCommitment: "confirmed",
-          },
-      )
-      */
-
       // Fetch Instructor and check that it no longer exists
       try {
         const deletedInstructor = await program.account.instructor.fetch(
-          instructor.publicKey
+          instructorPubKey
         );
         console.log(deletedInstructor);
       } catch (error) {
@@ -104,49 +53,71 @@ describe("instructor", () => {
     });
 
     it("creates an instructor account", async () => {
-      const signers = [instructor];
+      /*const instructor = await utils.createInstructor(
+        (provider.wallet as anchor.Wallet).payer
+      );
+      */
+
+      const [instructorPubKey, _] =
+        await anchor.web3.PublicKey.findProgramAddress(
+          instructorSeeds,
+          program.programId
+        );
 
       await program.methods
         .createInstructor("username", "profile pic url", "background pic url")
         .accounts({
-          instructor: instructor.publicKey,
-          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
+          instructor: instructorPubKey,
+          authority: provider.wallet.publicKey,
           systemProgram: anchor.web3.SystemProgram.programId,
         })
-        .signers(signers)
         .rpc();
 
-      /*
-      const latestBlockhash = await connection.getLatestBlockhash("processed");
-      const createInstructorTxn = new anchor.web3.Transaction({
-        feePayer: instructor.publicKey,
-        ...latestBlockhash,
-      });
-
-
-      createInstructorTxn.add(
-        program.methods
-          .createInstructor("username", "profile pic url", "background pic url")
-          .accounts({
-          instructor: instructor.publicKey,
-          authority: provider.wallet.publicKey, // same as ...provider.wallet.publicKey
-          systemProgram: anchor.web3.SystemProgram.programId,
-        }).signers(signers)
-      );
-      */
-
-      //await program.provider.send(txn, signers);
-      //await connection.sendTransaction(txn, [course]);
-      //await program.provider.sendAndConfirm(txn);
       const instructorAccount = await program.account.instructor.fetch(
-        instructor.publicKey
+        instructorPubKey
       );
+
       console.log("INSTRUCTOR ACCOUNT", instructorAccount);
 
       assert.equal(instructorAccount.username, "username");
       assert.equal(instructorAccount.profilePicUrl, "profile pic url");
       assert.equal(instructorAccount.backgroundPicUrl, "background pic url");
     });
+
+    // Change ids and/or createInstructor arguments when mocking data so everyone's doesn't all look the same
+    /*
+    it("can create mock data", async () => {
+      // Get 5 instructor keypairs
+      for (let i = 0; i < 5; i++) {
+        const instructorKeypair = await utils.getKeypair(
+          connection,
+          "I",
+          i.toString()
+        );
+
+        const instructor = await utils.createInstructor(
+          instructorKeypair,
+          `Test User ${i}`,
+          "https://www.pngfind.com/pngs/m/470-4703547_icon-user-icon-hd-png-download.png",
+          "https://cdn.pixabay.com/photo/2012/08/27/14/19/mountains-55067_960_720.png"
+        );
+      }
+    });
+
+    it("can delete mock data", async () => {
+      // Get 5 instructor keypairs
+      for (let i = 0; i < 5; i++) {
+        const instructorKeypair = await utils.getKeypair(
+          connection,
+          "I",
+          i.toString()
+        );
+
+        const instructor = await utils.deleteInstructor(instructorKeypair);
+        console.log("Deleted instructor", instructor);
+      }
+    });
+    */
 
     /*
     it("deletes test instructor accounts", async () => {

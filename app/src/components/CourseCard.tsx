@@ -5,6 +5,7 @@ import { CourseCardProps } from '../../types/CourseCardProps';
 
 export default function CourseCard({
   authority,
+  publicKey,
   title,
   thumbnailUrl,
   rating,
@@ -32,11 +33,6 @@ export default function CourseCard({
     setLiked(false);
   };
 
-  // TODO: Modify function to the PDA of the course, not just author's pubkey
-  const getCoursePDA = () => {
-    return authority.toBase58();
-  };
-
   return (
     <div className="w-[400px] transition hover:delay-200 hover:shadow-md hover:border-highlight-color border-2 border-card-border-color-start bg-fg-color rounded-xl overflow-hidden">
       <div className="center p-6">
@@ -46,7 +42,7 @@ export default function CourseCard({
         <div className="card-title pl-6">
           <p
             className="cursor-pointer"
-            onClick={() => router.push(`/courses/${getCoursePDA()}`)}
+            onClick={() => router.push(`/courses/${publicKey}`)}
           >
             {title}
           </p>

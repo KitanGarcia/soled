@@ -10,7 +10,6 @@ export default function InstructorCard({
   rating,
   listNumber,
 }: InstructorCardProps) {
-  const placeholder = 'https://via.placeholder.com/70x70';
   return (
     <div className="w-[440px] transition hover:delay-200 hover:shadow-md hover:border-highlight-color mx-6 bg-fg-color border-2 cursor-pointer border-card-border-color-start rounded-3xl">
       <div className="flex items-center">
@@ -20,7 +19,7 @@ export default function InstructorCard({
           </h1>
           <img
             className="ml-4 rounded-full h-[70px] w-[70px]"
-            src={placeholder}
+            src={profilePicUrl}
           />
         </div>
         <div>

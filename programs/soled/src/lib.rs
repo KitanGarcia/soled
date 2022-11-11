@@ -3,7 +3,7 @@ use anchor_lang::prelude::*;
 pub mod components;
 use components::*;
 
-declare_id!("927s7hwrsmMG62c7U5iRCxJyJrXf5sgrz94tUTLeDbCe");
+declare_id!("Hen1HiTHovdX68H4PVBPTGfww6FGL3zgXTeboBZB7EwW");
 
 
 #[program]
@@ -36,8 +36,9 @@ pub mod soled {
         price: u32,
         lessons: u32,
         thumbnail_url: String,
+        course_number: String,
     ) -> Result<()> {
-        components::create_course(ctx, title, rating, price, lessons, thumbnail_url)
+        components::create_course(ctx, title, rating, price, lessons, thumbnail_url, course_number)
     }
 
     pub fn delete_course(ctx: Context<DeleteCourse>) -> Result<()> {

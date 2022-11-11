@@ -50,19 +50,57 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
 
     if (connectedWallet && program && title && description && thumbnailUrl) {
       // Create account on chain
-      /*
-      const creatorSeeds = [
-        connectedWallet.publicKey.toBuffer(),
-        Buffer.from('creator'),
-      ];
 
-      const [creatorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
-        creatorSeeds,
+      //
+      // NOTES:
+      // GET INSTRUCTOR FROM CONTEXT
+      // GET INSTRUCTOR'S PUBKEY AND COURSE NUMBER
+      // USE COURSE NUMBER IN COURSE SEEDS
+      //
+      //
+      //const courseNumber = "1";
+
+      // Fetch instructor
+      const instructorSeeds = [
+        Buffer.from('instructor'),
+        connectedWallet.publicKey.toBuffer(),
+      ];
+      const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
+        instructorSeeds,
         program.programId
       );
-      */
 
-      const course = anchor.web3.Keypair.generate();
+      const instructor = await program.account.instructor.fetch(
+        instructorPubKey
+      );
+      console.log(instructor.numCourses);
+
+      const courseSeeds = [
+        instructorPubKey.toBuffer(),
+        Buffer.from('course'),
+        Buffer.from(`${instructor.numCourses}`),
+      ];
+
+      const [coursePubKey] = await anchor.web3.PublicKey.findProgramAddress(
+        courseSeeds,
+        program.programId
+      );
+      await program.methods
+        .createCourse(
+          title,
+          description,
+          1,
+          18.2,
+          thumbnailUrl,
+          `${instructor.numCourses}`
+        )
+        .accounts({
+          course: coursePubKey,
+          instructor: instructorPubKey,
+          authority: connectedWallet.publicKey,
+          systemProgram: anchor.web3.SystemProgram.programId,
+        })
+        .rpc();
 
       // Create Course account
       try {
@@ -86,7 +124,7 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
             thumbnailUrl
           )
           .accounts({
-            course: course.publicKey,
+            course: coursePubKey,
             authority: connectedWallet.publicKey,
             systemProgram: anchor.web3.SystemProgram.programId,
           })
@@ -95,18 +133,17 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
         txn.add(ixn);
 
         // Course signs with partialSign; user signs with sendTransaction
-        txn.partialSign(course);
         const signature = await sendTransaction(txn, connection);
+        console.log('received signature:', signature);
 
         await connection.confirmTransaction({
           blockhash: latestBlockhash.blockhash,
           lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
           signature,
         });
+        console.log('Transaction confirmed');
 
-        const courseAccount = await program.account.course.fetch(
-          course.publicKey
-        );
+        const courseAccount = await program.account.course.fetch(coursePubKey);
         console.log(courseAccount);
       } catch (error) {
         console.error('Course unable to be created.');

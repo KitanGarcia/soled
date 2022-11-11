@@ -28,9 +28,12 @@ export const CoursesProvider = ({ children }: CoursesProviderProps) => {
       return;
     }
 
-    const allCourses = await program.account.course
-      .all()
-      .then((courses) => courses.map((course) => course.account));
+    const allCourses = await program.account.course.all().then((courses) =>
+      courses.map((course) => {
+        course.account.publicKey = course.publicKey;
+        return course.account;
+      })
+    );
     setCourses(allCourses as Course[]);
   }, [setCourses, program]);
 
