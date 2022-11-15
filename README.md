@@ -17,7 +17,7 @@ What you need:
 
 2. Enter the project directory.
 
-4. Run `Anchor build`.
+4. Run `anchor build`.
 
 5. Navigate to **/app**.
     1. Run `npm install` or `yarn install`. This should install all the packages that are required by our frontend.
