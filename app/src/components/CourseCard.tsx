@@ -48,13 +48,20 @@ export default function CourseCard({
           </p>
         </div>
       </div>
-      <div className="max-h-16 overflow-hidden pt-5 pl-6">
-        <div className="text-secondary-text">Rating:</div>
+      <div className="max-h-40 overflow-hidden mt-5 ml-6">
+        <div className="text-secondary-text">Author:</div>
+        <strong
+          className="cursor-pointer text-sm font-normal"
+          onClick={() => router.push(`/instructors/${authority}`)}
+        >
+          {authority.toString()}
+        </strong>
+        <div className="mt-5 text-secondary-text">Rating:</div>
         <strong className="text-transparent font-normal bg-clip-text bg-gradient-to-br from-solana-start to-solana-end">
           {rating}
         </strong>{' '}
       </div>
-      <div className="pt-5 pb-5 pl-6 flex">
+      <div className="mt-5 mb-5 ml-6 flex">
         <p className="text-secondary-text"> Tech/Community: </p>
         <WrenchIcon className="ml-1 h-6 w-6 text-main-text" />{' '}
         <WrenchIcon className="ml-1 h-6 w-6 text-main-text" />{' '}
