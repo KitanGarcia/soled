@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { Course } from '../../types/Course';
+import { Course } from '../types/Course';
 
 export const CoursesContext = createContext<Array<Course> | undefined>(
   undefined

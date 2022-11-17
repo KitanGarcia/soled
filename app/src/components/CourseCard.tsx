@@ -1,7 +1,7 @@
 import { WrenchIcon, HeartIcon } from '@heroicons/react/24/solid';
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { CourseCardProps } from '../../types/CourseCardProps';
+import { CourseCardProps } from '../types/CourseCardProps';
 
 export default function CourseCard({
   authority,

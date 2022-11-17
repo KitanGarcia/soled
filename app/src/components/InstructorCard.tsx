@@ -1,4 +1,4 @@
-import { InstructorCardProps } from '../../types/InstructorCardProps';
+import { InstructorCardProps } from '../types/InstructorCardProps';
 
 export default function InstructorCard({
   username,
