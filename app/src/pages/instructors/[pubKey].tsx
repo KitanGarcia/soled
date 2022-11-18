@@ -1,15 +1,55 @@
-import type { NextPage } from 'next';
+import { useEffect, useMemo, useState } from 'react';
+import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { HeartIcon } from '@heroicons/react/24/solid';
-import React from 'react';
+
+import * as Web3 from '@solana/web3.js';
+import * as anchor from '@project-serum/anchor';
+import { AnchorProvider } from '@project-serum/anchor';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
+import IDL from '../../../../target/idl/soled.json';
 
 import styles from '../../styles/Home.module.css';
 import NavBar from '../../components/layout/NavBar';
 import Footer from '../../components/layout/Footer';
+import { Instructor } from '../../types/Instructor';
 
-const MyCourses: NextPage = () => {
+const InstructorPage: NextPage = () => {
   const router = useRouter();
-  const pubKey = router.query;
+  const [instructor, setInstructor] = useState<Instructor>();
+  const wallet = useAnchorWallet();
+
+  const program = useMemo(() => {
+    if (wallet) {
+      const provider = new AnchorProvider(connection, wallet!, OPTS);
+      return new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+    }
+  }, [wallet]);
+
+  useEffect(() => {
+    const getInstructorPubKey = async () => {
+      if (program && router.query.pubKey) {
+        const pubKey = new Web3.PublicKey(router.query.pubKey);
+
+        const instructorSeeds = [Buffer.from('instructor'), pubKey.toBuffer()];
+        const [instructorPubKey, _] =
+          await anchor.web3.PublicKey.findProgramAddress(
+            instructorSeeds,
+            program.programId
+          );
+
+        if (instructorPubKey) {
+          const fetchedInstructor = await program.account.instructor.fetch(
+            instructorPubKey
+          );
+          setInstructor(fetchedInstructor as Instructor);
+        }
+      }
+    };
+
+    getInstructorPubKey();
+  }, [program, router.query]);
 
   return (
     <div className="bg-bg-color">
@@ -103,4 +143,4 @@ const MyCourses: NextPage = () => {
   );
 };
 
-export default MyCourses;
+export default InstructorPage;
