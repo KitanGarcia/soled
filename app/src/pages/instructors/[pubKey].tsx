@@ -24,7 +24,9 @@ const InstructorPage: NextPage = () => {
   const [instructor, setInstructor] = useState<Instructor>();
   const [instructorPubKey, setInstructorPubKey] =
     useState<anchor.web3.PublicKey>();
-  const [courses, setCourses] = useState<Array<Course>>([]);
+  const [coursesAndPubKeys, setCoursesAndPubKeys] = useState<
+    { course: Course; pubkey: String }[]
+  >([]);
   const wallet = useAnchorWallet();
 
   const program = useMemo(() => {
@@ -78,13 +80,18 @@ const InstructorPage: NextPage = () => {
 
           try {
             const course = await program.account.course.fetch(coursePubKey);
-            fetchedCourses.push(course);
+            fetchedCourses.push({
+              course: course as Course,
+              pubkey: coursePubKey.toString(),
+            });
           } catch (error) {
             console.log('Could not fetch courses');
             console.log(error);
           }
         }
-        setCourses(fetchedCourses as Array<Course>);
+        setCoursesAndPubKeys(
+          fetchedCourses as { course: Course; pubkey: String }[]
+        );
         console.log(fetchedCourses);
       };
 
@@ -125,16 +132,23 @@ const InstructorPage: NextPage = () => {
                 </p>
                 <hr className="my-10 text-hr-color" />
               </div>
-              {courses && (
+              {coursesAndPubKeys && (
                 <h1 className="font-bold text-main-text tracking-widest leading-6 text-2xl mb-6">
                   {`Course Offerings`.toUpperCase()}
                 </h1>
               )}
 
-              {courses &&
-                courses.map((course, index) => (
-                  <p key={index}>{course.title}</p>
-                ))}
+              {coursesAndPubKeys &&
+                coursesAndPubKeys.map((tuple, index) => {
+                  return (
+                    <p
+                      key={index}
+                      onClick={() => router.push(`/courses/${tuple.pubkey}`)}
+                    >
+                      {tuple.course.title}
+                    </p>
+                  );
+                })}
             </div>
           </div>
         </div>
