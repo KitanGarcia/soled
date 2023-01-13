@@ -143,6 +143,7 @@ const InstructorPage: NextPage = () => {
                   return (
                     <p
                       key={index}
+                      className="cursor-pointer"
                       onClick={() => router.push(`/courses/${tuple.pubkey}`)}
                     >
                       {tuple.course.title}
