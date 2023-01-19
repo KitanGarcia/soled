@@ -123,12 +123,9 @@ const InstructorPage: NextPage = () => {
               </h1>
               <div className="pr-24  text-overview-secondary-text">
                 <p className="pt-6 pr-6">
-                  Description. This will be a really long instructor profile
-                  summary. It's gonna talk about how dope I am as an instructor
-                  and how you should take my courses. Seriously, though, you'll
-                  learn so much freaking material in my classes, it won't even
-                  be funny, dude. Like oh my gawwwddd... You'll be a certified
-                  genius. Come take my courses, please.
+                  {
+                    "Description. This will be a really long course description. It's gonna talk about how dope this course is and how you should take it. Seriously, though, you'll learn so much freaking material in this course, it won't even be funny, dude. Like oh my gawwwddd... You'll be a certified genius. Come take this course, please. Your SOL will sustain me to make other great courses such as this one to fuel both the adoption of web3 and my wallet for eons to come!!!"
+                  }
                 </p>
                 <hr className="my-10 text-hr-color" />
               </div>
