@@ -1,7 +1,7 @@
 import { useRef, useMemo, useEffect, Dispatch, SetStateAction } from 'react';
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
-import IDL from '../../../target/idl/soled.json';
+import IDL from '../utils/soled.json';
 import { connection, OPTS, PROGRAM_ID } from '../utils/Connection';
 
 interface formProps {

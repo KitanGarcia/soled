@@ -1,0 +1,228 @@
+{
+  "version": "0.1.0",
+  "name": "soled",
+  "instructions": [
+    {
+      "name": "initialize",
+      "accounts": [],
+      "args": []
+    },
+    {
+      "name": "createInstructor",
+      "accounts": [
+        {
+          "name": "instructor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "username",
+          "type": "string"
+        },
+        {
+          "name": "profilePicUrl",
+          "type": "string"
+        },
+        {
+          "name": "backgroundPicUrl",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deleteInstructor",
+      "accounts": [
+        {
+          "name": "instructor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    },
+    {
+      "name": "createCourse",
+      "accounts": [
+        {
+          "name": "course",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "instructor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "rating",
+          "type": "string"
+        },
+        {
+          "name": "price",
+          "type": "u32"
+        },
+        {
+          "name": "lessons",
+          "type": "u32"
+        },
+        {
+          "name": "thumbnailUrl",
+          "type": "string"
+        },
+        {
+          "name": "courseNumber",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "deleteCourse",
+      "accounts": [
+        {
+          "name": "course",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "instructor",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": []
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Course",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "title",
+            "type": "string"
+          },
+          {
+            "name": "rating",
+            "type": "string"
+          },
+          {
+            "name": "price",
+            "type": "u32"
+          },
+          {
+            "name": "numLessons",
+            "type": "u32"
+          },
+          {
+            "name": "thumbnailUrl",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Instructor",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "authority",
+            "type": "publicKey"
+          },
+          {
+            "name": "username",
+            "type": "string"
+          },
+          {
+            "name": "numFollowers",
+            "type": "u8"
+          },
+          {
+            "name": "numFollowing",
+            "type": "u8"
+          },
+          {
+            "name": "numCourses",
+            "type": "u8"
+          },
+          {
+            "name": "rating",
+            "type": "u8"
+          },
+          {
+            "name": "profilePicUrl",
+            "type": "string"
+          },
+          {
+            "name": "backgroundPicUrl",
+            "type": "string"
+          },
+          {
+            "name": "bump",
+            "type": "u8"
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "address": "Hen1HiTHovdX68H4PVBPTGfww6FGL3zgXTeboBZB7EwW"
+  }
+}

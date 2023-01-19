@@ -5,7 +5,7 @@ import type { NextPage } from 'next';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import styles from '../styles/Home.module.css';
 import { connection, OPTS, PROGRAM_ID } from '../utils/Connection';
-import IDL from '../../../target/idl/soled.json';
+import IDL from '../utils/soled.json';
 import NavBar from '../components/layout/NavBar';
 import Footer from '../components/layout/Footer';
 import InstructorCard from '../components/InstructorCard';

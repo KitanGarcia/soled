@@ -3,7 +3,7 @@ import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import * as React from 'react';
 import { Course } from '../types/Course';
 import { connection, OPTS, PROGRAM_ID } from '../utils/Connection';
-import IDL from '../../../target/idl/soled.json';
+import IDL from '../utils/soled.json';
 import { useCallback, useEffect, useState } from 'react';
 import { CoursesContext } from '../hooks/useCourses';
 

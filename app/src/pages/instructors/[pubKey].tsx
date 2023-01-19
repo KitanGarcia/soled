@@ -7,7 +7,7 @@ import * as anchor from '@project-serum/anchor';
 import { AnchorProvider } from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
-import IDL from '../../../../target/idl/soled.json';
+import IDL from '../../utils/soled.json';
 
 import styles from '../../styles/Home.module.css';
 import NavBar from '../../components/layout/NavBar';
