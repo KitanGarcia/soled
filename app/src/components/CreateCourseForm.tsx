@@ -9,8 +9,8 @@ import {
 import * as anchor from '@project-serum/anchor';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import IDL from '../../../target/idl/soled.json';
-import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
+import IDL from '../utils/soled.json';
+import { connection, OPTS, PROGRAM_ID } from '../utils/Connection';
 
 interface formProps {
   setShowModal: Dispatch<SetStateAction<boolean>>;

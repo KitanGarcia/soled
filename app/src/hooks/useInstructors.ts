@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { Instructor } from '../../types/Instructor';
+import { Instructor } from '../types/Instructor';
 
 export const InstructorsContext = createContext<Array<Instructor> | undefined>(
   undefined

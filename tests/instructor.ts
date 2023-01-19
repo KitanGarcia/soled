@@ -4,7 +4,7 @@ import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Soled } from "../target/types/soled";
 import * as utils from "./utils/testUtils";
-import { connection } from "../app/utils/Connection";
+import { connection } from "./utils/Connection";
 
 describe("instructor", async () => {
   // Configure the client to use the local cluster.
