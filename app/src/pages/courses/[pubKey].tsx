@@ -1,15 +1,43 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { HeartIcon } from '@heroicons/react/24/solid';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
+import * as anchor from '@project-serum/anchor';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { AnchorProvider } from '@project-serum/anchor';
 
 import styles from '../../styles/Home.module.css';
 import NavBar from '../../components/layout/NavBar';
 import Footer from '../../components/layout/Footer';
 
+import { connection, OPTS, PROGRAM_ID } from '../../utils/Connection';
+import IDL from '../../utils/soled.json';
+import { PublicKey } from '@solana/web3.js';
+import { Course } from '../../types/Course';
+
 const MyCourses: NextPage = () => {
   const router = useRouter();
-  const pubKey = router.query;
+  const wallet = useAnchorWallet();
+  const [course, setCourse] = useState<Course>();
+
+  const program = useMemo(() => {
+    if (wallet) {
+      const provider = new AnchorProvider(connection, wallet!, OPTS);
+      return new anchor.Program(IDL as anchor.Idl, PROGRAM_ID, provider);
+    }
+  }, [wallet]);
+
+  useEffect(() => {
+    if (program && router.query.pubKey) {
+      const coursePubKey = new PublicKey(router.query.pubKey);
+
+      const getCourse = async () => {
+        const course = await program.account.course.fetch(coursePubKey);
+        setCourse(course as Course);
+      };
+      getCourse();
+    }
+  }, [program, router]);
 
   return (
     <div className="bg-bg-color">
