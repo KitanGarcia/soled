@@ -28,12 +28,16 @@ export const InstructorsProvider = ({ children }: InstructorsProviderProps) => {
       return;
     }
 
-    const allInstructors = await program.account.instructor
-      .all()
-      .then((instructors) =>
-        instructors.map((instructor) => instructor.account)
-      );
-    setInstructors(allInstructors as Instructor[]);
+    try {
+      const allInstructors = await program.account.instructor
+        .all()
+        .then((instructors) =>
+          instructors.map((instructor) => instructor.account)
+        );
+      setInstructors(allInstructors as Instructor[]);
+    } catch (error) {
+      console.log('Unable to fetch instructors in context', error);
+    }
   }, [setInstructors, program]);
 
   useEffect(() => {
