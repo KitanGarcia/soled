@@ -42,19 +42,24 @@ const InstructorPage: NextPage = () => {
         const pubKey = new Web3.PublicKey(router.query.pubKey);
 
         const instructorSeeds = [Buffer.from('instructor'), pubKey.toBuffer()];
-        const [instructorPubKey, _] =
-          await anchor.web3.PublicKey.findProgramAddress(
-            instructorSeeds,
-            program.programId
-          );
 
-        if (instructorPubKey) {
-          const fetchedInstructor = await program.account.instructor.fetch(
-            instructorPubKey
-          );
-          setInstructorPubKey(instructorPubKey);
-          setInstructor(fetchedInstructor as Instructor);
-          console.log(fetchedInstructor);
+        try {
+          const [instructorPubKey, _] =
+            await anchor.web3.PublicKey.findProgramAddress(
+              instructorSeeds,
+              program.programId
+            );
+
+          if (instructorPubKey) {
+            const fetchedInstructor = await program.account.instructor.fetch(
+              instructorPubKey
+            );
+            setInstructorPubKey(instructorPubKey);
+            setInstructor(fetchedInstructor as Instructor);
+            console.log(fetchedInstructor);
+          }
+        } catch (error) {
+          console.log('Unable to fetch instructor', error);
         }
       }
     };
@@ -73,20 +78,20 @@ const InstructorPage: NextPage = () => {
             Buffer.from(`${i}`),
           ];
 
-          const [coursePubKey] = await anchor.web3.PublicKey.findProgramAddress(
-            courseSeeds,
-            program.programId
-          );
-
           try {
+            const [coursePubKey] =
+              await anchor.web3.PublicKey.findProgramAddress(
+                courseSeeds,
+                program.programId
+              );
+
             const course = await program.account.course.fetch(coursePubKey);
             fetchedCourses.push({
               course: course as Course,
               pubkey: coursePubKey.toString(),
             });
           } catch (error) {
-            console.log('Could not fetch courses');
-            console.log(error);
+            console.log('Could not fetch courses', error);
           }
         }
         setCoursesAndPubKeys(
