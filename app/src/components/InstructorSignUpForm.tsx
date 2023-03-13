@@ -51,13 +51,15 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
         Buffer.from('instructor'),
         connectedWallet.publicKey.toBuffer(),
       ];
-      const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
-        instructorSeeds,
-        program.programId
-      );
 
-      // Create Instructor account
       try {
+        const [instructorPubKey] =
+          await anchor.web3.PublicKey.findProgramAddress(
+            instructorSeeds,
+            program.programId
+          );
+
+        // Create Instructor account
         await program.methods
           .createInstructor(username, profilePicUrl, backgroundPicUrl)
           .accounts({
@@ -67,16 +69,12 @@ export default function InstructorSignUpForm({ setShowModal }: formProps) {
           })
           .rpc();
 
-        try {
-          const instructorAccount = await program.account.instructor.fetch(
-            instructorPubKey
-          );
-          console.log(instructorAccount);
-        } catch {
-          console.error('Instructor unable to be created.');
-        }
+        const instructorAccount = await program.account.instructor.fetch(
+          instructorPubKey
+        );
+        console.log(instructorAccount);
       } catch (error) {
-        console.error(error);
+        console.log('Instructor unable to be created.', error);
       }
     }
   };
