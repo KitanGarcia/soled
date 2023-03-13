@@ -33,13 +33,16 @@ const MyCourses: NextPage = () => {
       const coursePubKey = new PublicKey(router.query.pubKey);
 
       const getCourse = async () => {
-        const course = await program.account.course.fetch(coursePubKey);
-        setCourse(course as Course);
+        try {
+          const course = await program.account.course.fetch(coursePubKey);
+          setCourse(course as Course);
+        } catch (error) {
+          console.log('Unable to fetch course', error);
+        }
       };
       getCourse();
     }
   }, [program, router]);
-  console.log(course);
 
   return (
     <div className="bg-bg-color">

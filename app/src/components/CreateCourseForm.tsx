@@ -65,43 +65,50 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
         Buffer.from('instructor'),
         connectedWallet.publicKey.toBuffer(),
       ];
-      const [instructorPubKey] = await anchor.web3.PublicKey.findProgramAddress(
-        instructorSeeds,
-        program.programId
-      );
 
-      const instructor = await program.account.instructor.fetch(
-        instructorPubKey
-      );
-      console.log(instructor.numCourses);
+      try {
+        const [instructorPubKey] =
+          await anchor.web3.PublicKey.findProgramAddress(
+            instructorSeeds,
+            program.programId
+          );
 
-      const courseSeeds = [
-        instructorPubKey.toBuffer(),
-        Buffer.from('course'),
-        Buffer.from(`${instructor.numCourses}`),
-      ];
+        const instructor = await program.account.instructor.fetch(
+          instructorPubKey
+        );
+        console.log(instructor.numCourses);
 
-      const [coursePubKey] = await anchor.web3.PublicKey.findProgramAddress(
-        courseSeeds,
-        program.programId
-      );
-      await program.methods
-        .createCourse(
-          title,
-          description,
-          1,
-          18.2,
-          thumbnailUrl,
-          `${instructor.numCourses}`
-        )
-        .accounts({
-          course: coursePubKey,
-          instructor: instructorPubKey,
-          authority: connectedWallet.publicKey,
-          systemProgram: anchor.web3.SystemProgram.programId,
-        })
-        .rpc();
+        const courseSeeds = [
+          instructorPubKey.toBuffer(),
+          Buffer.from('course'),
+          Buffer.from(`${instructor.numCourses}`),
+        ];
 
+        const [coursePubKey] = await anchor.web3.PublicKey.findProgramAddress(
+          courseSeeds,
+          program.programId
+        );
+        await program.methods
+          .createCourse(
+            title,
+            description,
+            1,
+            18.2,
+            thumbnailUrl,
+            `${instructor.numCourses}`
+          )
+          .accounts({
+            course: coursePubKey,
+            instructor: instructorPubKey,
+            authority: connectedWallet.publicKey,
+            systemProgram: anchor.web3.SystemProgram.programId,
+          })
+          .rpc();
+      } catch (error) {
+        console.log('Unable to create course', error);
+      }
+
+      /*
       // Create Course account
       try {
         const latestBlockhash = await connection.getLatestBlockhash(
@@ -149,6 +156,7 @@ export default function CreateCourseForm({ setShowModal }: formProps) {
         console.error('Course unable to be created.');
         console.error(error);
       }
+      */
     }
   };
 

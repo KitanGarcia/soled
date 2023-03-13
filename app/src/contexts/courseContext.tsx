@@ -28,13 +28,17 @@ export const CoursesProvider = ({ children }: CoursesProviderProps) => {
       return;
     }
 
-    const allCourses = await program.account.course.all().then((courses) =>
-      courses.map((course) => {
-        course.account.publicKey = course.publicKey;
-        return course.account;
-      })
-    );
-    setCourses(allCourses as Course[]);
+    try {
+      const allCourses = await program.account.course.all().then((courses) =>
+        courses.map((course) => {
+          course.account.publicKey = course.publicKey;
+          return course.account;
+        })
+      );
+      setCourses(allCourses as Course[]);
+    } catch (error) {
+      console.log('Unable to fetch courses in context', error);
+    }
   }, [setCourses, program]);
 
   useEffect(() => {
